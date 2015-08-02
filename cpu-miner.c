@@ -2412,9 +2412,7 @@ static void show_version_and_exit(void)
 	/* dependencies versions */
 	printf("%s\n", curl_version());
 #ifdef JANSSON_VERSION
-	printf("libjansson/%s ", JANSSON_VERSION);
-#else
-	printf("libjansson/1.3 "); /* windows */
+	printf("jansson/%s ", JANSSON_VERSION);
 #endif
 #ifdef PTW32_VERSION
 	printf("pthreads/%d.%d.%d.%d ", PTW32_VERSION);
