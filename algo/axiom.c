@@ -120,6 +120,9 @@ int scanhash_axiom(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
 
 	uint32_t n = first_nonce;
 
+	// to avoid small chance of generating duplicate shares
+	max_nonce = (max_nonce / 4) * 4;
+
 	for (int i=0; i < 19; i++) {
 		be32enc(&endiandata_1[i], pdata[i]);
 	}
@@ -139,25 +142,25 @@ int scanhash_axiom(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
 		//axiomhash(hash64_1, endiandata_1);
 		axiomhash4way(&ctx_org, memspace, endiandata_1, hash64_1, endiandata_2, hash64_2, endiandata_3, hash64_3, endiandata_4, hash64_4);
 		if (hash64_1[7] < Htarg && fulltest(hash64_1, ptarget)) {
-			*hashes_done = n - first_nonce + 1;
+			*hashes_done = n - first_nonce + 4;
 			pdata[19] = n;
 			free(memspace);
 			return true;
 		}
 		if (hash64_2[7] < Htarg && fulltest(hash64_2, ptarget)) {
-			*hashes_done = n + 1 - first_nonce + 1;
+			*hashes_done = n - first_nonce + 4;
 			pdata[19] = n + 1;
 			free(memspace);
 			return true;
 		}
 		if (hash64_3[7] < Htarg && fulltest(hash64_3, ptarget)) {
-			*hashes_done = n + 2 - first_nonce + 1;
+			*hashes_done = n - first_nonce + 4;
 			pdata[19] = n + 2;
 			free(memspace);
 			return true;
 		}
 		if (hash64_4[7] < Htarg && fulltest(hash64_4, ptarget)) {
-			*hashes_done = n + 3 - first_nonce + 1;
+			*hashes_done = n - first_nonce + 4;
 			pdata[19] = n + 3;
 			free(memspace);
 			return true;
@@ -168,7 +171,7 @@ int scanhash_axiom(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
 
 	} while (n < max_nonce && !work_restart[thr_id].restart);
 
-	*hashes_done = n - first_nonce + 1;
+	*hashes_done = n - first_nonce + 4;
 	pdata[19] = n;
 	free(memspace);
 	return 0;
