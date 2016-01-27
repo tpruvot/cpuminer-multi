@@ -105,6 +105,7 @@ enum algos {
 	ALGO_SKEIN,       /* Skein */
 	ALGO_SKEIN2,      /* Double skein (Woodcoin) */
 	ALGO_S3,          /* S3 */
+	ALGO_VANILLA,     /* Vanilla (Blake256 8-rounds - double sha256) */
 	ALGO_X11,         /* X11 */
 	ALGO_X13,         /* X13 */
 	ALGO_X14,         /* X14 */
@@ -148,6 +149,7 @@ static const char *algo_names[] = {
 	"skein",
 	"skein2",
 	"s3",
+	"vanilla",
 	"x11",
 	"x13",
 	"x14",
@@ -290,6 +292,7 @@ Options:\n\
                           skein        Skein+Sha (Skeincoin)\n\
                           skein2       Double Skein (Woodcoin)\n\
                           s3           S3\n\
+                          Vanilla      Vanilla (Blake 256 8-rounds - double sha256)\n\
                           x11          X11\n\
                           x13          X13\n\
                           x14          X14\n\
@@ -1961,6 +1964,7 @@ static void *miner_thread(void *userdata)
 			case ALGO_BLAKE2S:
 			case ALGO_SKEIN:
 			case ALGO_SKEIN2:
+			case ALGO_VANILLA:
 				max64 = 0x7ffffLL;
 				break;
 			default:
@@ -2079,6 +2083,9 @@ static void *miner_thread(void *userdata)
 			break;
 		case ALGO_S3:
 			rc = scanhash_s3(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_VANILLA:
+			rc = scanhash_blakecoin(thr_id, &work, max_nonce, &hashes_done);
 			break;
 		case ALGO_X11:
 			rc = scanhash_x11(thr_id, &work, max_nonce, &hashes_done);
