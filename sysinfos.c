@@ -19,6 +19,12 @@
  "/sys/class/hwmon/hwmon1/temp1_input"
 #define HWMON_ALT2 \
  "/sys/class/hwmon/hwmon0/temp1_input"
+#define HWMON_ALT3 \
+ "/sys/devices/platform/coretemp.0/hwmon/hwmon0/temp2_input"
+#define HWMON_ALT4 \
+ "/sys/class/hwmon/hwmon0/temp2_input"
+#define HWMON_ALT5 \
+ "/sys/class/hwmon/hwmon0/device/temp1_input"
 
 static float linux_cputemp(int core)
 {
@@ -31,6 +37,15 @@ static float linux_cputemp(int core)
 
 	if (!fd)
 		fd = fopen(HWMON_ALT2, "r");
+
+	if (!fd)
+		fd = fopen(HWMON_ALT3, "r");
+
+	if (!fd)
+		fd = fopen(HWMON_ALT4, "r");
+
+	if (!fd)
+                fd = fopen(HWMON_ALT5, "r");
 
 	if (!fd)
 		return tc;
