@@ -43,7 +43,7 @@ Algorithms
  * ✓ __pentablake__ (Joincoin)
  * ✓ __pluck__ (Supcoin [SUP])
  * ✓ __quark__ (Quarkcoin)
- * ✓ __qubit__ (MyriadCoin [MYR])
+ * ✓ __qubit__
  * ✓ __skein__ (Skeincoin, Myriadcoin, Xedoscoin, ...)
  * ✓ __skein2__ (Woodcoin)
  * ✓ __s3__ (OneCoin)
@@ -53,7 +53,7 @@ Algorithms
  * ✓ __x13__ (Sherlockcoin, [ACE], [B2B], [GRC], [XHC], ...)
  * ✓ __x14__ (X14, Webcoin [WEB])
  * ✓ __x15__ (RadianceCoin [RCE])
- * ✓ __yescrypt__ (GlobalBoostY [BSTY], Unitus [UIS])
+ * ✓ __yescrypt__ (GlobalBoostY [BSTY], Unitus [UIS], MyriadCoin [MYR])
  * ✓ __zr5__ (Ziftrcoin [ZRC])
 
 #### Implemented, but untested
