@@ -4,7 +4,7 @@ os: linux
 sudo: required
 dist: trusty
 install:
-  - sudo apt-get -qq update
+  - sudo apt-get update -qq
   - sudo apt-get install -y automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++
 script:
   - ./autogen.sh && ./configure --with-crypto --with-curl  && make
