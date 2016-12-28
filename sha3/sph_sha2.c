@@ -653,7 +653,6 @@ void
 sph_sha224_close(void *cc, void *dst)
 {
 	sha224_close(cc, dst, 7);
-	sph_sha224_init(cc);
 }
 
 /* see sph_sha2.h */
@@ -661,7 +660,6 @@ void
 sph_sha224_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	sha224_addbits_and_close(cc, ub, n, dst, 7);
-	sph_sha224_init(cc);
 }
 
 /* see sph_sha2.h */
@@ -669,7 +667,6 @@ void
 sph_sha256_close(void *cc, void *dst)
 {
 	sha224_close(cc, dst, 8);
-	sph_sha256_init(cc);
 }
 
 /* see sph_sha2.h */
@@ -677,7 +674,6 @@ void
 sph_sha256_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	sha224_addbits_and_close(cc, ub, n, dst, 8);
-	sph_sha256_init(cc);
 }
 
 /* see sph_sha2.h */

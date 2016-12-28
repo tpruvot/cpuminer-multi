@@ -996,7 +996,6 @@ jh_close(sph_jh_context *sc, unsigned ub, unsigned n,
 		enc32e(buf + (u << 2), sc->H.narrow[u + 16]);
 #endif
 	memcpy(dst, buf + ((16 - out_size_w32) << 2), out_size_w32 << 2);
-	jh_init(sc, iv);
 }
 
 /* see sph_jh.h */

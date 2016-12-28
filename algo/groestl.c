@@ -20,7 +20,7 @@ void groestlhash(void *output, const void *input)
 	sph_groestl512(&ctx, input, 80);
 	sph_groestl512_close(&ctx, hash);
 
-	//sph_groestl512_init(&ctx);
+	sph_groestl512_init(&ctx);
 	sph_groestl512(&ctx, hash, 64);
 	sph_groestl512_close(&ctx, hash);
 

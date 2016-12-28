@@ -41,24 +41,32 @@ void lbry_hash(void* output, const void* input)
 	// sha256d
 	sph_sha256(&ctx.sha256, input, 112);
 	sph_sha256_close(&ctx.sha256, hashA);
+    sph_sha256_init(&ctx.sha256);
+
 	sph_sha256(&ctx.sha256, hashA, 32);
 	sph_sha256_close(&ctx.sha256, hashA);
+    sph_sha256_init(&ctx.sha256);
 
 	sph_sha512(&ctx.sha512, hashA, 32);
 	sph_sha512_close(&ctx.sha512, hashA);
+    sph_sha512_init(&ctx.sha512);
 
 	sph_ripemd160(&ctx.ripemd, hashA, 32);
 	sph_ripemd160_close(&ctx.ripemd, hashB);
+    sph_ripemd160_init(&ctx.ripemd);
 
 	sph_ripemd160(&ctx.ripemd, &hashA[8], 32); // weird
 	sph_ripemd160_close(&ctx.ripemd, hashC);
+    sph_ripemd160_init(&ctx.ripemd);
 
 	sph_sha256(&ctx.sha256, hashB, 20);
 	sph_sha256(&ctx.sha256, hashC, 20);
 	sph_sha256_close(&ctx.sha256, hashA);
+    sph_sha256_init(&ctx.sha256);
 
 	sph_sha256(&ctx.sha256, hashA, 32);
 	sph_sha256_close(&ctx.sha256, hashA);
+    sph_sha256_init(&ctx.sha256);
 
 	memcpy(output, hashA, 32);
 }

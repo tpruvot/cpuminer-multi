@@ -17,7 +17,7 @@ void axiomhash(void *output, const void *input)
 	sph_shabal256_close(&ctx, M[0]);
 
 	for(int i = 1; i < N; i++) {
-		//sph_shabal256_init(&ctx);
+		sph_shabal256_init(&ctx);
 		sph_shabal256(&ctx, M[i-1], 32);
 		sph_shabal256_close(&ctx, M[i]);
 	}
@@ -28,7 +28,7 @@ void axiomhash(void *output, const void *input)
 		const int q = M[p][0] % 0xFFFF;
 		const int j = (b + q) % N;
 
-		//sph_shabal256_init(&ctx);
+		sph_shabal256_init(&ctx);
 #if 0
 		sph_shabal256(&ctx, M[p], 32);
 		sph_shabal256(&ctx, M[j], 32);

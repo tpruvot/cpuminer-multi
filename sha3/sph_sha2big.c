@@ -208,7 +208,6 @@ void
 sph_sha384_close(void *cc, void *dst)
 {
 	sha384_close(cc, dst, 6);
-	sph_sha384_init(cc);
 }
 
 /* see sph_sha3.h */
@@ -216,7 +215,6 @@ void
 sph_sha384_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	sha384_addbits_and_close(cc, ub, n, dst, 6);
-	sph_sha384_init(cc);
 }
 
 /* see sph_sha3.h */
@@ -224,7 +222,6 @@ void
 sph_sha512_close(void *cc, void *dst)
 {
 	sha384_close(cc, dst, 8);
-	sph_sha512_init(cc);
 }
 
 /* see sph_sha3.h */
@@ -232,7 +229,6 @@ void
 sph_sha512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	sha384_addbits_and_close(cc, ub, n, dst, 8);
-	sph_sha512_init(cc);
 }
 
 /* see sph_sha3.h */
