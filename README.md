@@ -90,16 +90,22 @@ Build
 =====
 
 #### Basic *nix build instructions:
- * just use ./build.sh
+ * just use `./build.sh`
 _OR_
- * ./autogen.sh	# only needed if building from git repo
- * ./nomacro.pl	# only needed if building on Mac OS X or with Clang
- * ./configure CFLAGS="*-march=native*" --with-crypto --with-curl
-   * # Use -march=native if building for a single machine
- * make
+
+```
+ ./autogen.sh	# only needed if building from git repo
+ ./nomacro.pl	# only needed if building on Mac OS X or with Clang
+ ./configure CFLAGS="*-march=native*" --with-crypto --with-curl
+ # Use -march=native if building for a single machine
+ make
+```
 
 #### Note for Debian/Ubuntu users:
- * apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++
+
+```
+ apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++
+```
 
 #### Notes for AIX users:
  * To build a 64-bit binary, export OBJECT_MODE=64
@@ -118,16 +124,18 @@ _OR_
    * Make sure you have curl-config in MinGW\bin
  * Install openssl devel (https://www.openssl.org/related/binaries.html)
  * In the MSYS shell, run:
-   * for 64bit, you can use ./mingw64.sh else :
-     ./autogen.sh	# only needed if building from git repo
-   * LIBCURL="-lcurldll" ./configure CFLAGS="*-march=native*"
-     * # Use -march=native if building for a single machine
-   * make
+   * for 64bit, you can use `./mingw64.sh` else :
+     `./autogen.sh	# only needed if building from git repo`
+   ```
+   LIBCURL="-lcurldll" ./configure CFLAGS="*-march=native*"
+   # Use -march=native if building for a single machine
+   make
+    ```
 
 #### Architecture-specific notes:
  * ARM:
    * No runtime CPU detection. The miner can take advantage of some instructions specific to ARMv5E and later processors, but the decision whether to use them is made at compile time, based on compiler-defined macros.
-   * To use NEON instructions, add "-mfpu=neon" to CFLAGS.
+   * To use NEON instructions, add `"-mfpu=neon"` to CFLAGS.
  * x86:
    * The miner checks for SSE2 instructions support at runtime, and uses them if they are available.
  * x86-64:	
