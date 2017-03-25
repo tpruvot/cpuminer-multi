@@ -2657,7 +2657,7 @@ static void *stratum_thread(void *userdata)
 				}
 				restart_threads();
 			} else if (opt_debug && !opt_quiet) {
-					applog(LOG_BLUE, "%s asks job %d for block %d", short_url,
+					applog(LOG_BLUE, "%s asks job %lu for block %d", short_url,
 						strtoul(stratum.job.job_id, NULL, 16), stratum.bloc_height);
 			}
 		}
