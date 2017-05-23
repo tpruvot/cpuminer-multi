@@ -866,7 +866,6 @@ void
 sph_bmw224_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	bmw32_close(cc, ub, n, dst, 7);
-	sph_bmw224_init(cc);
 }
 
 /* see sph_bmw.h */
@@ -895,7 +894,6 @@ void
 sph_bmw256_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	bmw32_close(cc, ub, n, dst, 8);
-	sph_bmw256_init(cc);
 }
 
 #if SPH_64
@@ -926,7 +924,6 @@ void
 sph_bmw384_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	bmw64_close(cc, ub, n, dst, 6);
-	sph_bmw384_init(cc);
 }
 
 /* see sph_bmw.h */
@@ -955,7 +952,6 @@ void
 sph_bmw512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	bmw64_close(cc, ub, n, dst, 8);
-	sph_bmw512_init(cc);
 }
 
 #endif

@@ -1717,7 +1717,6 @@ void
 sph_simd224_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	finalize_small(cc, ub, n, dst, 7);
-	sph_simd224_init(cc);
 }
 
 void
@@ -1742,7 +1741,6 @@ void
 sph_simd256_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	finalize_small(cc, ub, n, dst, 8);
-	sph_simd256_init(cc);
 }
 
 void
@@ -1767,7 +1765,6 @@ void
 sph_simd384_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	finalize_big(cc, ub, n, dst, 12);
-	sph_simd384_init(cc);
 }
 
 void
@@ -1792,7 +1789,6 @@ void
 sph_simd512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	finalize_big(cc, ub, n, dst, 16);
-	sph_simd512_init(cc);
 }
 #ifdef __cplusplus
 }

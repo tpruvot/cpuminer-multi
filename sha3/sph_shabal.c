@@ -658,7 +658,6 @@ shabal_close(void *cc, unsigned ub, unsigned n, void *dst, unsigned size_words)
 	}
 	out_len = size_words << 2;
 	memcpy(dst, u.tmp_out + (sizeof u.tmp_out) - out_len, out_len);
-	shabal_init(sc, size_words << 5);
 }
 #if 0
 /* see sph_shabal.h */

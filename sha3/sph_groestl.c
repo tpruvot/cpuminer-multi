@@ -2865,7 +2865,6 @@ groestl_small_close(sph_groestl_small_context *sc,
 		enc32e(pad + (u << 2), H[u + 8]);
 #endif
 	memcpy(dst, pad + 32 - out_len, out_len);
-	groestl_small_init(sc, (unsigned)out_len << 3);
 }
 
 static void
@@ -2999,7 +2998,6 @@ groestl_big_close(sph_groestl_big_context *sc,
 		enc32e(pad + (u << 2), H[u + 16]);
 #endif
 	memcpy(dst, pad + 64 - out_len, out_len);
-	groestl_big_init(sc, (unsigned)out_len << 3);
 }
 
 /* see sph_groestl.h */

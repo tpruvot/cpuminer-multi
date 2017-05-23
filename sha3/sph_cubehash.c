@@ -629,7 +629,6 @@ void
 sph_cubehash224_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	cubehash_close(cc, ub, n, dst, 7);
-	sph_cubehash224_init(cc);
 }
 
 /* see sph_cubehash.h */
@@ -658,7 +657,6 @@ void
 sph_cubehash256_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	cubehash_close(cc, ub, n, dst, 8);
-	sph_cubehash256_init(cc);
 }
 
 /* see sph_cubehash.h */
@@ -687,7 +685,6 @@ void
 sph_cubehash384_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	cubehash_close(cc, ub, n, dst, 12);
-	sph_cubehash384_init(cc);
 }
 
 /* see sph_cubehash.h */
@@ -716,7 +713,6 @@ void
 sph_cubehash512_addbits_and_close(void *cc, unsigned ub, unsigned n, void *dst)
 {
 	cubehash_close(cc, ub, n, dst, 16);
-	sph_cubehash512_init(cc);
 }
 #ifdef __cplusplus
 }

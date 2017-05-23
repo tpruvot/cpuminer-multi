@@ -994,9 +994,6 @@ fugue2_close(sph_fugue_context *sc, unsigned ub, unsigned n,
 	sph_enc32be(out + 24, S[17]);
 	if (out_size_w32 == 8) {
 		sph_enc32be(out + 28, S[18]);
-		sph_fugue256_init(sc);
-	} else {
-		sph_fugue224_init(sc);
 	}
 }
 
@@ -1044,7 +1041,6 @@ fugue3_close(sph_fugue_context *sc, unsigned ub, unsigned n, void *dst)
 	sph_enc32be(out + 36, S[25]);
 	sph_enc32be(out + 40, S[26]);
 	sph_enc32be(out + 44, S[27]);
-	sph_fugue384_init(sc);
 }
 
 static void
@@ -1105,7 +1101,6 @@ fugue4_close(sph_fugue_context *sc, unsigned ub, unsigned n, void *dst)
 	sph_enc32be(out + 52, S[28]);
 	sph_enc32be(out + 56, S[29]);
 	sph_enc32be(out + 60, S[30]);
-	sph_fugue512_init(sc);
 }
 
 void

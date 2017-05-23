@@ -853,7 +853,6 @@ echo_small_close(sph_echo_small_context *sc, unsigned ub, unsigned n,
 		sph_enc32le_aligned(u.tmp + (k << 2), VV[k]);
 #endif
 	memcpy(dst, u.tmp, out_size_w32 << 2);
-	echo_small_init(sc, out_size_w32 << 5);
 }
 
 static void
@@ -912,7 +911,6 @@ echo_big_close(sph_echo_big_context *sc, unsigned ub, unsigned n,
 		sph_enc32le_aligned(u.tmp + (k << 2), VV[k]);
 #endif
 	memcpy(dst, u.tmp, out_size_w32 << 2);
-	echo_big_init(sc, out_size_w32 << 5);
 }
 
 /* see sph_echo.h */

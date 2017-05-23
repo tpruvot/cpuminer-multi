@@ -1643,7 +1643,6 @@ keccak_core(sph_keccak_context *kc, const void *data, size_t len, size_t lim)
 		for (j = 0; j < d; j += 8) \
 			sph_enc64le_aligned(u.tmp + j, kc->u.wide[j >> 3]); \
 		memcpy(dst, u.tmp, d); \
-		keccak_init(kc, (unsigned)d << 3); \
 	} \
 
 #else
@@ -1696,7 +1695,6 @@ keccak_core(sph_keccak_context *kc, const void *data, size_t len, size_t lim)
 		for (j = 0; j < d; j += 4) \
 			sph_enc32le_aligned(u.tmp + j, kc->u.narrow[j >> 2]); \
 		memcpy(dst, u.tmp, d); \
-		keccak_init(kc, (unsigned)d << 3); \
 	} \
 
 #endif

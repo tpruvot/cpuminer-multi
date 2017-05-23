@@ -3468,7 +3468,6 @@ sph_ ## name ## _close(void *cc, void *dst) \
 	sc = cc; \
 	for (i = 0; i < 8; i ++) \
 		sph_enc64le((unsigned char *)dst + 8 * i, sc->state[i]); \
-	sph_ ## name ## _init(cc); \
 }
 
 MAKE_CLOSE(whirlpool)
