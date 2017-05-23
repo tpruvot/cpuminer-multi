@@ -141,7 +141,7 @@ fi
 
 # libcurl install path (for mingw : --with-curl=/usr/local)
 AC_ARG_WITH([curl],
-   [  --with-curl=PATH         prefix where curl is installed [default=/usr]])
+   [  --with-curl=PATH         prefix where curl is installed [default=/usr]],,with_curl=/usr)
 
 if test -n "$with_curl" ; then
    LIBCURL_CFLAGS="$LIBCURL_CFLAGS -I$with_curl/include"
@@ -152,7 +152,7 @@ fi
 
 # SSL install path (for mingw : --with-crypto=/usr/local/ssl)
 AC_ARG_WITH([crypto],
-   [  --with-crypto=PATH       prefix where openssl crypto is installed [default=/usr]])
+   [  --with-crypto=PATH       prefix where openssl crypto is installed [default=/usr]],,with_crypto=/usr)
 
 if test -n "$with_crypto" ; then
    LIBCURL_CFLAGS="$LIBCURL_CFLAGS -I$with_crypto/include"
