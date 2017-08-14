@@ -218,7 +218,11 @@ static int opt_scrypt_n = 1024;
 static int opt_pluck_n = 128;
 static unsigned int opt_nfactor = 6;
 int opt_n_threads = 0;
+#ifdef __GNUC__
+__int128 opt_affinity = -1L;
+#elif
 int64_t opt_affinity = -1L;
+#endif
 int opt_priority = 0;
 int num_cpus;
 char *rpc_url;
@@ -477,12 +481,20 @@ static inline void drop_policy(void)
 #define pthread_setaffinity_np(tid,sz,s) {} /* only do process affinity */
 #endif
 
+#ifdef __GNUC__
+static void affine_to_cpu_mask(int id, unsigned __int128 mask) {
+#elif
 static void affine_to_cpu_mask(int id, unsigned long mask) {
+#endif
 	cpu_set_t set;
 	CPU_ZERO(&set);
 	for (uint8_t i = 0; i < num_cpus; i++) {
 		// cpu mask
+#ifdef __GNUC__
+		if (mask & ((unsigned __int128)1UL<<i)) { CPU_SET(i, &set); }
+#elif
 		if (mask & (1UL<<i)) { CPU_SET(i, &set); }
+#endif
 	}
 	if (id == -1) {
 		// process affinity
@@ -1926,7 +1938,11 @@ static void *miner_thread(void *userdata)
 			if (opt_debug)
 				applog(LOG_DEBUG, "Binding thread %d to cpu %d (mask %x)", thr_id,
 						thr_id % num_cpus, (1 << (thr_id % num_cpus)));
+#ifdef __GNUC__
+			affine_to_cpu_mask(thr_id, (unsigned __int128)1UL << (thr_id % num_cpus));
+#elif
 			affine_to_cpu_mask(thr_id, 1UL << (thr_id % num_cpus));
+#endif
 		} else if (opt_affinity != -1L) {
 			if (opt_debug)
 				applog(LOG_DEBUG, "Binding thread %d to cpu mask %x", thr_id,
