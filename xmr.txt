@@ -1,0 +1,1 @@
+-a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u lerotuf@gmail.com -p x
