@@ -110,6 +110,12 @@ _OR_
  apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++
 ```
 
+#### Note for Pi64 users:
+
+```
+ ./configure --disable-assembly CFLAGS="-Ofast -march=native" --with-crypto --with-curl
+```
+
 #### Notes for AIX users:
  * To build a 64-bit binary, export OBJECT_MODE=64
  * GNU-style long options are not supported, but are accessible via configuration file

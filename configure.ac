@@ -46,6 +46,9 @@ case $MINGW_TARGET in
   arm*-*-*)
     have_arm=true
     ;;
+  aarch64*-*-*)
+    have_arm=true
+    ;;
   i*86-*-mingw*)
     have_x86=true
     have_win32=true
