@@ -110,7 +110,7 @@ _OR_
  apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++
 ```
 
-#### Note for Pi64 users:
+#### Note for pi64 users:
 
 ```
  ./configure --disable-assembly CFLAGS="-Ofast -march=native" --with-crypto --with-curl
