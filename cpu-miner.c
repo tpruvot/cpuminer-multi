@@ -3282,6 +3282,13 @@ BOOL WINAPI ConsoleHandler(DWORD dwType)
 	return true;
 }
 #endif
+#ifndef __arm__
+ static inline int cpuid(int code, uint32_t where[4]) {
+	  	asm volatile("cpuid":"=a"(*where),"=b"(*(where+1)),
+	 			"=c"(*(where+2)),"=d"(*(where+3)):"a"(code));
+		 	return (int)where[0];
+			 }
+#endif
 
 static int thread_create(struct thr_info *thr, void* func)
 {
