@@ -190,6 +190,7 @@ bool opt_debug = false;
 bool opt_debug_diff = false;
 bool opt_protocol = false;
 bool opt_benchmark = false;
+bool opt_bmcsv = false;
 bool opt_redirect = true;
 bool opt_showdiff = true;
 bool opt_extranonce = true;
@@ -272,6 +273,8 @@ uint32_t opt_work_size = 0; /* default */
 char *opt_api_allow = NULL;
 int opt_api_remote = 0;
 int opt_api_listen = 4048; /* 0 to disable */
+
+char csv_rowheader[64] = "";
 
 #ifdef HAVE_GETOPT_LONG
 #include <getopt.h>
@@ -375,6 +378,7 @@ Options:\n\
 "\
   -B, --background      run the miner in the background\n\
       --benchmark       run in offline benchmark mode\n\
+      --bmcsv		benchmark output csv friendly\n\
       --cputest         debug hashes from cpu algorithms\n\
       --cpu-affinity    set process affinity to cpu core(s), mask 0x3 for cores 0 and 1\n\
       --cpu-priority    set process priority (default: 0 idle, 2 normal to 5 highest)\n\
@@ -401,6 +405,7 @@ static struct option const options[] = {
 	{ "api-remote", 0, NULL, 1030 },
 	{ "background", 0, NULL, 'B' },
 	{ "benchmark", 0, NULL, 1005 },
+	{ "bmcsv", 1, NULL, 1063},
 	{ "cputest", 0, NULL, 1006 },
 	{ "cert", 1, NULL, 1001 },
 	{ "coinbase-addr", 1, NULL, 1016 },
@@ -2088,7 +2093,16 @@ static void *miner_thread(void *userdata)
 					char rate[32];
 					format_hashrate((double)global_hashrate, rate);
 					applog(LOG_NOTICE, "Benchmark: %s", rate);
+					if (opt_bmcsv) { 
+						if (strlen(csv_rowheader) > 0){
+						printf("%s; ", csv_rowheader);
+						}
+						printf("%s; %llu;\n", algo_names[opt_algo], (long long unsigned int) global_hashrate);
+					} else {
 					fprintf(stderr, "%llu\n", (long long unsigned int) global_hashrate);
+					}
+
+
 				} else {
 					applog(LOG_NOTICE,
 						"Mining timeout of %ds reached, exiting...", opt_time_limit);
@@ -3174,6 +3188,13 @@ void parse_arg(int key, char *arg)
 		if (p) d *= 1e9;
 		opt_max_rate = d;
 		break;
+	case 1063: // CSV friendly Benchmark output
+		if (strlen(arg) + 1 > sizeof(csv_rowheader)) {
+			fprintf(stderr, "The entered header-name of --bmcsv is too long.\n");
+			show_usage_and_exit(1);
+		}
+		opt_bmcsv = true;
+		strcpy(csv_rowheader, arg);
 	case 1024:
 		opt_randomize = true;
 		break;
@@ -3307,8 +3328,6 @@ int main(int argc, char *argv[]) {
 
 	pthread_mutex_init(&applog_lock, NULL);
 
-	show_credits();
-
 	rpc_user = strdup("");
 	rpc_pass = strdup("");
 	opt_api_allow = strdup("127.0.0.1"); /* 0.0.0.0 for all ips */
@@ -3331,6 +3350,12 @@ int main(int argc, char *argv[]) {
 
 	/* parse command line */
 	parse_cmdline(argc, argv);
+
+
+	if(!opt_quiet) {
+		show_credits();
+	}
+
 
 	if (!opt_benchmark && !rpc_url) {
 		// try default config file in binary folder
