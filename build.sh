@@ -18,31 +18,36 @@ rm -f config.status
 # Debian 7.7 / Ubuntu 14.04 (gcc 4.7+)
 extracflags="$extracflags -Ofast -flto -fuse-linker-plugin -ftree-loop-if-convert-stores"
 
+found_arm="no"
+
 if [ ! "0" = `cat /proc/cpuinfo | grep -c avx` ]; then
     # march native doesn't always works, ex. some Pentium Gxxx (no avx)
     extracflags="$extracflags -march=native"
 fi
 
 if [ ! "0" = `grep -i ^Features /proc/cpuinfo | grep -c neon` ]; then
-	    # add ARM neon support on Arm CPUs
-	        #extracflags="$extracflags -march=armv7-a -mtune=cortex-a7 -mfpu=neon-vfpv4 -funsafe-math-optimizations -mfloat-abi=softfp"
-		extracflags="$extracflags -march=armv7-a -mfloat-abi=hard -mfpu=neon-vfpv4  -funsafe-math-optimizations -mtune=cortex-a7"
+	    # add general ARM neon support on Arm CPUs
+            extracflags="$extracflags -march=armv7-a -mfloat-abi=hard -mfpu=neon-vfpv4  -funsafe-math-optimizations -mtune=cortex-a7"
+            found_arm="yes"
 fi
 
 if [ ! "0" = `grep -i ^Hardware /proc/cpuinfo | egrep -c -e ODROID-C2 -e sun50iw1p1` ]; then
-            # add ARM neon support on Arm64 CPUs
+            # add ARM neon support on Odroid-C2 (aarch64) boards
             extracflags="$extracflags -march=armv8-a+fp+simd+crc+lse -mtune=cortex-a53"
+	    found_arm="yes"
 fi
 
 if [ ! "0" = `grep -i ^Hardware /proc/cpuinfo | grep -c ODROID-XU3` ]; then
-            # add ARM neon support on Arm64 CPUs
+            # add ARM neon support on ODROID XU3,XU4 and HC1 Boards (Exynos5422)
             extracflags="$extracflags -march=armv7-a -mfloat-abi=hard -mfpu=neon-vfpv4  -funsafe-math-optimizations -mtune=cortex-a15.cortex-a7"
+	    found_arm="yes"
 fi
 
-
-
-#./configure --with-crypto --with-curl CFLAGS="-O2 $extracflags -DUSE_ASM -pg" --disable-assembly --prefix=$HOME/monero
-./configure --with-crypto --with-curl CFLAGS="-O2 $extracflags -pg" --disable-assembly --prefix=$HOME/monero
+if [ "$found_arm" = "yes" ]; then
+	./configure --with-crypto --with-curl CFLAGS="-O2 $extracflags -pg" --disable-assembly 
+else
+	./configure --with-crypto --with-curl CFLAGS="-O2 $extracflags -DUSE_ASM -pg"
+fi
 
 make -j 4
 
