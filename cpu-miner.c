@@ -1808,7 +1808,7 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 			case ALGO_KECCAK:
 			case ALGO_KECCAKC:
 				work_set_target(work, sctx->job.diff / (256.0 * opt_diff_factor));
-				break:
+				break;
 			case ALGO_LYRA2:
 				work_set_target(work, sctx->job.diff / (128.0 * opt_diff_factor));
 				break;
@@ -2233,7 +2233,7 @@ static void *miner_thread(void *userdata)
 			break;
 		case ALGO_KECCAKC:
 			rc = scanhash_keccak(thr_id, &work, max_nonce, &hashes_done);
-			break:
+			break;
 		case ALGO_HEAVY:
 			rc = scanhash_heavy(thr_id, &work, max_nonce, &hashes_done);
 			break;
