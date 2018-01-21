@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ "$OS" = "Windows_NT" ]; then
     ./mingw64.sh
