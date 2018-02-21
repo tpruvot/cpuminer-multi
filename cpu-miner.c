@@ -852,6 +852,11 @@ static bool gbt_work_decode(const json_t *val, struct work *work)
 		/* BIP 34: height in coinbase */
 		for (n = work->height; n; n >>= 8)
 			cbtx[cbtx_size++] = n & 0xff;
+                /* If the last byte pushed is >= 0x80, then we need to add
+                   another zero byte to signal that the block height is a
+                   positive number.  */
+                if (cbtx[cbtx_size - 1] & 0x80)
+                        cbtx[cbtx_size++] = 0;
 		cbtx[42] = cbtx_size - 43;
 		cbtx[41] = cbtx_size - 42; /* scriptsig length */
 		le32enc((uint32_t *)(cbtx+cbtx_size), 0xffffffff); /* sequence */
