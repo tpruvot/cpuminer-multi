@@ -62,14 +62,6 @@ typedef uint32_t scrypt_mix_word_t;
 #define SCRYPT_ROMIX_UNTANGLE_FN scrypt_romix_convert_endian
 #include "scrypt-jane-romix-template.h"
 
-#ifdef __arm__
-
-static size_t detect_cpu(void) {
-	return 0;
-}
-
-#endif
-
 #if !defined(SCRYPT_CHOOSE_COMPILETIME)
 static scrypt_ROMixfn
 scrypt_getROMix() {

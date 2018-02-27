@@ -276,5 +276,13 @@ scrypt_ensure_zero(void *p, size_t len) {
 #endif
 }
 
+#ifdef __arm__
+
+static size_t detect_cpu(void) {
+	return 0;
+}
+
+#endif
+
 #include "scrypt-jane-portable-x86.h"
 
