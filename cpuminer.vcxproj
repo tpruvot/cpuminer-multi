@@ -166,6 +166,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="algo\lyra2z.c" />
     <ClCompile Include="compat\getopt\getopt_long.c" />
     <ClCompile Include="compat\gettimeofday.c" />
     <ClCompile Include="compat\jansson\dump.c" />
@@ -184,6 +185,7 @@
       <Optimization Condition="'$(Configuration)'=='Release'">Full</Optimization>
     </ClCompile>
     <ClCompile Include="api.c" />
+    <ClCompile Include="lyra2\Lyra2-xzc.c" />
     <ClCompile Include="sysinfos.c" />
     <ClCompile Include="crypto\aesb.c" />
     <ClCompile Include="crypto\c_blake256.c" />

@@ -52,6 +52,7 @@ cpuminer_SOURCES = \
   crypto/hash.c \
   crypto/aesb.c \
   lyra2/Lyra2.c lyra2/Sponge.c \
+  lyra2/Lyra2-xzc.c \
   yescrypt/yescrypt-common.c yescrypt/yescrypt-best.c \
   yescrypt/sha256_Y.c \
   algo/allium.c \
@@ -75,6 +76,7 @@ cpuminer_SOURCES = \
   algo/luffa.c \
   algo/lyra2re.c \
   algo/lyra2rev2.c \
+  algo/lyra2z.c \
   algo/myr-groestl.c \
   algo/keccak.c \
   algo/pentablake.c \

@@ -345,6 +345,12 @@
     <ClCompile Include="yescrypt\sha256_Y.c">
       <Filter>yescrypt</Filter>
     </ClCompile>
+    <ClCompile Include="algo\lyra2z.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="lyra2\Lyra2-xzc.c">
+      <Filter>algo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sha3\sph_blake.h">
