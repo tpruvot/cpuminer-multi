@@ -39,6 +39,10 @@ extern "C" {
 #include <stdlib.h> /* for size_t */
 
 void yescrypt_hash(const char* input, char* output, uint32_t len);
+void yescrypt_hash_r8(const char* input, char* output, uint32_t len);
+void yescrypt_hash_r16(const char* input, char* output, uint32_t len);
+void yescrypt_hash_r32(const char* input, char* output, uint32_t len);
+
 
 /**
  * crypto_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):

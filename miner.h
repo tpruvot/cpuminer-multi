@@ -256,6 +256,9 @@ int scanhash_x16s(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *h
 int scanhash_x17(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 int scanhash_xevan(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 int scanhash_yescrypt(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
+int scanhash_yescryptr8(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
+int scanhash_yescryptr16(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
+int scanhash_yescryptr32(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 int scanhash_zr5(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 
 /* api related */

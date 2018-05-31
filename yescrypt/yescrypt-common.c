@@ -367,6 +367,23 @@ void yescrypt_hash(const char *input, char *output, uint32_t len)
 	yescrypt_bsty((uint8_t*)input, len, (uint8_t*)input, len, 2048, 8, 1, (uint8_t*)output, 32);
 }
 
+void yescrypt_hash_r8(const char *input, char *output, uint32_t len)
+{
+	yescrypt_bsty((uint8_t*)input, len, "Client Key", strlen("Client Key"), 2048, 8, 1, (uint8_t*)output, 32);
+
+}
+
+void yescrypt_hash_r16(const char *input, char *output, uint32_t len)
+{
+	yescrypt_bsty((uint8_t*)input, len, "Client Key", strlen("Client Key"), 4096, 16, 1, (uint8_t*)output, 32);
+
+}
+
+void yescrypt_hash_r32(const char *input, char *output, uint32_t len)
+{
+	yescrypt_bsty((uint8_t*)input, len, "WaviBanana", strlen("WaviBanana"), 4096, 32, 1, (uint8_t*)output, 32);
+
+}
 /* for util.c test */
 void yescrypthash(void *output, const void *input)
 {
