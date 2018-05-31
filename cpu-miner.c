@@ -134,6 +134,9 @@ enum algos {
 	ALGO_X17,         /* X17 */
 	ALGO_XEVAN,
 	ALGO_YESCRYPT,
+	ALGO_YESCRYPTR8,
+	ALGO_YESCRYPTR16,
+	ALGO_YESCRYPTR32,
 	ALGO_ZR5,
 	ALGO_COUNT
 };
@@ -196,6 +199,9 @@ static const char *algo_names[] = {
 	"x17",
 	"xevan",
 	"yescrypt",
+	"yescryptr8",
+	"yescryptr16",
+	"yescryptr32",
 	"zr5",
 	"\0"
 };
@@ -356,6 +362,9 @@ Options:\n\
                           x17          X17\n\
                           xevan        Xevan (BitSend)\n\
                           yescrypt     Yescrypt\n\
+			  yescryptr8   Yescrypt r8\n\
+			  yescryptr16  Yescrypt r16\n\
+			  yescryptr32  Yescrypt r32\n\
                           zr5          ZR5\n\
   -o, --url=URL         URL of mining server\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
@@ -1816,6 +1825,9 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 			case ALGO_NEOSCRYPT:
 			case ALGO_PLUCK:
 			case ALGO_YESCRYPT:
+			case ALGO_YESCRYPTR8:
+			case ALGO_YESCRYPTR16:
+			case ALGO_YESCRYPTR32:
 				work_set_target(work, sctx->job.diff / (65536.0 * opt_diff_factor));
 				break;
 			case ALGO_ALLIUM:
@@ -2150,7 +2162,12 @@ static void *miner_thread(void *userdata)
 			case ALGO_DROP:
 			case ALGO_PLUCK:
 			case ALGO_YESCRYPT:
+			case ALGO_YESCRYPTR8:
 				max64 = 0x1ff;
+				break;
+			case ALGO_YESCRYPTR16:
+			case ALGO_YESCRYPTR32:
+				max64 = 0xfff;
 				break;
 			case ALGO_ALLIUM:
 			case ALGO_LYRA2:
@@ -2386,6 +2403,15 @@ static void *miner_thread(void *userdata)
 			break;
 		case ALGO_YESCRYPT:
 			rc = scanhash_yescrypt(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_YESCRYPTR8:
+			rc = scanhash_yescryptr8(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_YESCRYPTR16:
+			rc = scanhash_yescryptr16(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_YESCRYPTR32:
+			rc = scanhash_yescryptr32(thr_id, &work, max_nonce, &hashes_done);
 			break;
 		case ALGO_ZR5:
 			rc = scanhash_zr5(thr_id, &work, max_nonce, &hashes_done);

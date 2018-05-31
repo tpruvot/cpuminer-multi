@@ -36,6 +36,9 @@
 static const char * const itoa64 =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+char *yescrypt_client_key = NULL;
+int yescrypt_client_key_len = 0;
+
 static uint8_t* encode64_uint32(uint8_t* dst, size_t dstlen, uint32_t src, uint32_t srcbits)
 {
 	uint32_t bit;
@@ -367,6 +370,29 @@ void yescrypt_hash(const char *input, char *output, uint32_t len)
 	yescrypt_bsty((uint8_t*)input, len, (uint8_t*)input, len, 2048, 8, 1, (uint8_t*)output, 32);
 }
 
+void yescrypt_hash_r8(const char *input, char *output, uint32_t len)
+{
+	yescrypt_client_key = "Client Key";
+	yescrypt_client_key_len = strlen("Client Key");
+	yescrypt_bsty((uint8_t*)input, len, (uint8_t *)input, len, 2048, 8, 1, (uint8_t*)output, 32);
+
+}
+
+void yescrypt_hash_r16(const char *input, char *output, uint32_t len)
+{
+	yescrypt_client_key = "Client Key";
+	yescrypt_client_key_len = strlen("Client Key");
+	yescrypt_bsty((uint8_t*)input, len, (uint8_t*)input, len, 4096, 16, 1, (uint8_t*)output, 32);
+
+}
+
+void yescrypt_hash_r32(const char *input, char *output, uint32_t len)
+{
+	yescrypt_client_key = "WaviBanana";
+	yescrypt_client_key_len = strlen("WaviBanana");
+	yescrypt_bsty((uint8_t*)input, len, (uint8_t*)input, len, 4096, 32, 1, (uint8_t*)output, 32);
+
+}
 /* for util.c test */
 void yescrypthash(void *output, const void *input)
 {
