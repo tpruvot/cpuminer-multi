@@ -8,7 +8,7 @@
 
 #include "yescrypt/yescrypt.h"
 
-int scanhash_yescrypt(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
+int do_scanhash(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done, void (*hash_func)(const char *, char *, uint32_t))
 {
 	uint32_t _ALIGN(64) vhash[8];
 	uint32_t _ALIGN(64) endiandata[20];
@@ -26,7 +26,7 @@ int scanhash_yescrypt(int thr_id, struct work *work, uint32_t max_nonce, uint64_
 
 	do {
 		be32enc(&endiandata[19], n);
-		yescrypt_hash((char*) endiandata, (char*) vhash, 80);
+		hash_func((char*) endiandata, (char*) vhash, 80);
 		if (vhash[7] < Htarg && fulltest(vhash, ptarget)) {
 			work_set_target_ratio(work, vhash);
 			*hashes_done = n - first_nonce + 1;
@@ -41,4 +41,24 @@ int scanhash_yescrypt(int thr_id, struct work *work, uint32_t max_nonce, uint64_
 	pdata[19] = n;
 
 	return 0;
+}
+
+int scanhash_yescrypt(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
+{
+	return (do_scanhash(thr_id, work, max_nonce, hashes_done, yescrypt_hash));
+}
+
+int scanhash_yescryptr8(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
+{
+	return (do_scanhash(thr_id, work, max_nonce, hashes_done, yescrypt_hash_r8));
+}
+
+int scanhash_yescryptr16(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
+{
+	return (do_scanhash(thr_id, work, max_nonce, hashes_done, yescrypt_hash_r16));
+}
+
+int scanhash_yescryptr32(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
+{
+	return (do_scanhash(thr_id, work, max_nonce, hashes_done, yescrypt_hash_r32));
 }
