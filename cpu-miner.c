@@ -109,6 +109,7 @@ enum algos {
 	ALGO_PHI2,
 	ALGO_PLUCK,       /* Pluck (Supcoin) */
 	ALGO_QUBIT,       /* Qubit */
+	ALGO_RAINFOREST,  /* RainForest */
 	ALGO_SCRYPT,      /* scrypt */
 	ALGO_SCRYPTJANE,  /* Chacha */
 	ALGO_SHAVITE3,    /* Shavite3 */
@@ -172,6 +173,7 @@ static const char *algo_names[] = {
 	"phi2",
 	"pluck",
 	"qubit",
+	"rainforest",
 	"scrypt",
 	"scrypt-jane",
 	"shavite3",
@@ -334,6 +336,7 @@ Options:\n\
                           phi2         LUX newer algo\n\
                           quark        Quark\n\
                           qubit        Qubit\n\
+                          rainforest   RainForest (256)\n\
                           scrypt       scrypt(1024, 1, 1) (default)\n\
                           scrypt:N     scrypt(N, 1, 1)\n\
                           scrypt-jane:N (with N factor from 4 to 30)\n\
@@ -2331,6 +2334,9 @@ static void *miner_thread(void *userdata)
 			break;
 		case ALGO_QUBIT:
 			rc = scanhash_qubit(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_RAINFOREST:
+			rc = scanhash_rf256(thr_id, &work, max_nonce, &hashes_done);
 			break;
 		case ALGO_SCRYPT:
 			rc = scanhash_scrypt(thr_id, &work, max_nonce, &hashes_done, scratchbuf, opt_scrypt_n);
