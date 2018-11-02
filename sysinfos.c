@@ -113,9 +113,10 @@ int cpu_fanpercent()
 
 #if !defined(__arm__) && !defined(__aarch64__)
 static inline void cpuid(int functionnumber, int output[4]) {
-#if defined (_MSC_VER) || defined (__INTEL_COMPILER)
-	// Microsoft or Intel compiler, intrin.h included
-	__cpuidex(output, functionnumber, 0);
+#if defined (_MSC_VER)       // Microsoft compiler, intrin.h included
+  __cpuidex(output, functionnumber, 0);                  // intrinsic function for CPUID
+#elif defined(__INTEL_COMPILER) // Intel compiler
+  __cpuid(output, functionnumber);                  // intrinsic function for CPUID
 #elif defined(__GNUC__) || defined(__clang__)
 	// use inline assembly, Gnu/AT&T syntax
 	int a, b, c, d;
