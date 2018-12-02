@@ -303,6 +303,9 @@
     <ClCompile Include="algo\x16r.c">
       <Filter>algo</Filter>
     </ClCompile>
+    <ClCompile Include="algo\x20r.c">
+      <Filter>algo</Filter>
+    </ClCompile>
     <ClCompile Include="algo\x16s.c">
       <Filter>algo</Filter>
     </ClCompile>
