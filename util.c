@@ -2496,6 +2496,9 @@ void print_hash_tests(void)
 	x17hash(&hash[0], &buf[0]);
 	printpfx("x17", hash);
 
+	x20r_hash(&hash[0], &buf[0]);
+	printpfx("x20r", hash);
+
 	yescrypthash(&hash[0], &buf[0]);
 	printpfx("yescrypt", hash);
 

@@ -46,6 +46,12 @@
     <ClCompile Include="sha3\sph_luffa.c">
       <Filter>sph</Filter>
     </ClCompile>
+    <ClCompile Include="sha3\sph_panama.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_radiogatun.c">
+      <Filter>sph</Filter>
+    </ClCompile>
     <ClCompile Include="sha3\sph_ripemd.c">
       <Filter>sph</Filter>
     </ClCompile>
@@ -309,6 +315,9 @@
     <ClCompile Include="algo\x17.c">
       <Filter>algo</Filter>
     </ClCompile>
+    <ClCompile Include="algo\x20r.c">
+      <Filter>algo</Filter>
+    </ClCompile>
     <ClCompile Include="algo\xevan.c">
       <Filter>algo</Filter>
     </ClCompile>
@@ -393,6 +402,12 @@
       <Filter>sph</Filter>
     </ClInclude>
     <ClInclude Include="sha3\sph_luffa.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_panama.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_radiogatun.h">
       <Filter>sph</Filter>
     </ClInclude>
     <ClInclude Include="sha3\sph_sha2.h">
