@@ -872,7 +872,7 @@ static bool gbt_work_decode(const json_t *val, struct work *work)
 		}
 		cbvalue = (int64_t) (json_is_integer(tmp) ? json_integer_value(tmp) : json_number_value(tmp));
 		cbtx = (uchar*) malloc(256);
-		le32enc((uint32_t *)cbtx, 1); /* version */
+		le32enc((uint32_t *)cbtx, 2); /* version */
 		cbtx[4] = 1; /* in-counter */
 		memset(cbtx+5, 0x00, 32); /* prev txout hash */
 		le32enc((uint32_t *)(cbtx+37), 0xffffffff); /* prev txout index */
@@ -898,6 +898,11 @@ static bool gbt_work_decode(const json_t *val, struct work *work)
 		cbtx_size += (int) pk_script_size;
 		le32enc((uint32_t *)(cbtx+cbtx_size), 0); /* lock time */
 		cbtx_size += 4;
+		const char* floData = "MLG cpuminer-multi";
+		char floDataLen = strlen(floData); // only works if floData is less than 252 chars
+		cbtx[cbtx_size++] = floDataLen;    // else the encoded varInt will be wrong
+		memcpy(cbtx+cbtx_size, floData, floDataLen);
+		cbtx_size += floDataLen;
 		coinbase_append = true;
 	}
 	if (coinbase_append) {
