@@ -446,7 +446,7 @@ static struct option const options[] = {
 	{ "diff-factor", 1, NULL, 'f' },
 	{ "diff", 1, NULL, 'f' }, // deprecated (alias)
 	{ "diff-multiplier", 1, NULL, 'm' },
-	{ "flodata", 1, NULL, 1070 },
+	{ "flodata", 1, NULL, 'l' },
 	{ "help", 0, NULL, 'h' },
 	{ "nfactor", 1, NULL, 'n' },
 	{ "no-gbt", 0, NULL, 1011 },
@@ -3289,7 +3289,7 @@ void parse_arg(int key, char *arg)
 		if (p) d *= 1e9;
 		opt_max_rate = d;
 		break;
-	case 1070: // flodata message
+	case 'l': // flodata message
 		free(opt_flodata);
 		opt_flodata = strdup(arg);
 		break;
