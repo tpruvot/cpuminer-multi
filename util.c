@@ -2502,6 +2502,9 @@ void print_hash_tests(void)
 	x17hash(&hash[0], &buf[0]);
 	printpfx("x17", hash);
 
+	geekhash(&hash[0], &buf[0]);
+	printpfx("geek", hash);
+
 	x20r_hash(&hash[0], &buf[0]);
 	printpfx("x20r", hash);
 

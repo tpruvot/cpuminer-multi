@@ -318,6 +318,9 @@
     <ClCompile Include="algo\x17.c">
       <Filter>algo</Filter>
     </ClCompile>
+    <ClCompile Include="algo\geek.c">
+      <Filter>algo</Filter>
+    </ClCompile>
     <ClCompile Include="algo\x20r.c">
       <Filter>algo</Filter>
     </ClCompile>

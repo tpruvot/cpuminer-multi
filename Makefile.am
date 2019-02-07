@@ -32,9 +32,9 @@ cpuminer_SOURCES = \
   sha3/sph_cubehash.c \
   sha3/sph_simd.c \
   sha3/sph_echo.c \
-  sha3/sph_fugue.c \
   sha3/sph_hamsi.c \
   sha3/sph_haval.c \
+  sha3/sph_fugue.c \
   sha3/sph_panama.c \
   sha3/sph_radiogatun.c \
   sha3/sph_ripemd.c \
@@ -53,8 +53,10 @@ cpuminer_SOURCES = \
   crypto/c_skein.c \
   crypto/hash.c \
   crypto/aesb.c \
-  lyra2/Lyra2.c lyra2/Sponge.c \
-  yescrypt/yescrypt-common.c yescrypt/yescrypt-best.c \
+  lyra2/Lyra2.c \
+  lyra2/Sponge.c \
+  yescrypt/yescrypt-common.c \
+  yescrypt/yescrypt-best.c \
   yescrypt/sha256_Y.c \
   algo/allium.c \
   algo/axiom.c \
@@ -112,6 +114,7 @@ cpuminer_SOURCES = \
   algo/x16s.c \
   algo/x20r.c \
   algo/x17.c \
+  algo/geek.c \
   algo/xevan.c \
   algo/yescrypt.c \
   algo/zr5.c

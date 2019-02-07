@@ -259,6 +259,7 @@
     <ClCompile Include="algo\x16r.c" />
     <ClCompile Include="algo\x16s.c" />
     <ClCompile Include="algo\x17.c" />
+    <ClCompile Include="algo\geek.c" />
     <ClCompile Include="algo\x20r.c" />
     <ClCompile Include="algo\xevan.c" />
     <ClCompile Include="algo\yescrypt.c" />
