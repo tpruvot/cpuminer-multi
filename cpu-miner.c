@@ -369,7 +369,7 @@ Options:\n\
                           x16r         X16R (Raven)\n\
                           x16s         X16S (Pigeon)\n\
                           x17          X17\n\
-			  geek         Geek\n\
+                          geek         Geek\n\
                           x20r         X20R\n\
                           xevan        Xevan (BitSend)\n\
                           yescrypt     Yescrypt\n\
