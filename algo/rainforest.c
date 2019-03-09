@@ -534,16 +534,15 @@ static inline uint64_t rf_bswap64(uint64_t v) {
 // lookup _old_ in _rambox_, update it and perform a substitution if a matching
 // value is found.
 static inline uint32_t rf_rambox(uint64_t *rambox, uint64_t old) {
-  uint64_t *p;
+  uint64_t *p, k;
   int loops;
 
   for (loops=0; loops<RAMBOX_LOOPS; loops++) {
     old=rf_add64_crc32(old);
     p=&rambox[old&(RAMBOX_SIZE-1)];
-    old+=rf_rotr64(*p, (uint8_t) (old/RAMBOX_SIZE));
-    // 0x80 below gives a write ratio of 50%
-    if ((old>>56)<0x80)
-      *p = old;
+    k = *p;
+    old+=rf_rotr64(k, (uint8_t) (old/RAMBOX_SIZE));
+    *p = (int64_t)old < 0 ? k : old;
   }
   return (uint32_t)old;
 }
