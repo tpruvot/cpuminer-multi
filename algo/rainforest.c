@@ -845,6 +845,8 @@ int scanhash_rf256(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *
 #ifndef RF_DISABLE_CTX_MEMCPY
 		memcpy(&ctx, &ctx_common, sizeof(ctx));
 		rf256_update(&ctx, endiandata+19, 4);
+		if (ctx.hash.w[7])
+			goto next;
 		rf256_final(hash, &ctx);
 #else
 		rf256_hash(hash, endiandata, 80);
@@ -856,6 +858,7 @@ int scanhash_rf256(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *
 			*hashes_done = pdata[19] - first_nonce;
 			return 1;
 		}
+	next:
 		nonce++;
 	} while (nonce < max_nonce && !(*restart));
 
