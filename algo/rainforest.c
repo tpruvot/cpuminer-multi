@@ -253,11 +253,11 @@ typedef union {
 } hash256_t;
 
 typedef struct _ALIGN(128) rf_ctx {
-  uint64_t rambox[RAMBOX_SIZE];
-  hash256_t hash;
-  uint32_t crc;
   uint32_t word;  // LE pending message
   uint32_t len;   // total message length
+  uint32_t crc;
+  hash256_t hash _ALIGN(32);
+  uint64_t rambox[RAMBOX_SIZE] _ALIGN(64);
 } rf256_ctx_t;
 
 // these archs are fine with unaligned reads
