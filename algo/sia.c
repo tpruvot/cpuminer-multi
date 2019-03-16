@@ -10,10 +10,21 @@
 
 #include <crypto/blake2b.h>
 
+#define A 64
+
+#ifdef MIDSTATE
 static __thread blake2b_ctx s_midstate;
 static __thread blake2b_ctx s_ctx;
 #define MIDLEN 76
-#define A 64
+
+static void blake2b_hash_end(uint32_t *output, const uint32_t *input)
+{
+        s_ctx.outlen = MIDLEN;
+        memcpy(&s_ctx, &s_midstate, 32 + 16 + MIDLEN);
+        blake2b_update(&s_ctx, (uint8_t*) &input[MIDLEN/4], 80 - MIDLEN);
+        blake2b_final(&s_ctx, (uint8_t*) output);
+}
+#endif
 
 void blake2b_hash(void *output, const void *input)
 {
@@ -25,14 +36,6 @@ void blake2b_hash(void *output, const void *input)
 	blake2b_final(&ctx, hash);
 
 	memcpy(output, hash, 32);
-}
-
-static void blake2b_hash_end(uint32_t *output, const uint32_t *input)
-{
-	s_ctx.outlen = MIDLEN;
-	memcpy(&s_ctx, &s_midstate, 32 + 16 + MIDLEN);
-	blake2b_update(&s_ctx, (uint8_t*) &input[MIDLEN/4], 80 - MIDLEN);
-	blake2b_final(&s_ctx, (uint8_t*) output);
 }
 
 int scanhash_blake2b(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)

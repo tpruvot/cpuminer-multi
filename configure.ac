@@ -1,4 +1,4 @@
-AC_INIT([cpuminer-multi], [1.3.3])
+AC_INIT([cpuminer-multi], [1.3.6])
 
 AC_PREREQ([2.59c])
 AC_CANONICAL_SYSTEM
@@ -44,6 +44,9 @@ AC_CHECK_FUNCS([getopt_long])
 MINGW_TARGET=`$CC -dumpmachine 2>&1`
 case $MINGW_TARGET in
   arm*-*-*)
+    have_arm=true
+    ;;
+  aarch64*-*-*)
     have_arm=true
     ;;
   i*86-*-mingw*)
@@ -165,9 +168,9 @@ CFLAGS="$CFLAGS $LIBCURL_CFLAGS"
 CPPFLAGS="$CPPFLAGS $LIBCURL_CPPFLAGS"
 LDFLAGS="$LDFLAGS $LIBCURL_LDFLAGS"
 
-#AC_CHECK_LIB([z],[gzopen],[],[])
-#AC_CHECK_LIB([crypto],[OPENSSL_init], crypto=yes, [AC_MSG_ERROR([OpenSSL crypto library required])])
-#AC_CHECK_LIB([ssl],[SSL_new], ssl=yes, ssl=no)
+AC_CHECK_LIB([z],[gzopen],[],[])
+AC_CHECK_LIB([crypto],[EVP_DigestFinal_ex], crypto=yes, [AC_MSG_ERROR([OpenSSL crypto library required])])
+AC_CHECK_LIB([ssl],[SSL_free], ssl=yes, ssl=no)
 
 # AC_CHECK_LIB([curl], [curl_multi_timeout],
 #    have_libcurl=yes,

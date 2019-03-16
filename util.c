@@ -1681,21 +1681,33 @@ static uint32_t getblocheight(struct stratum_ctx *sctx)
 
 static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 {
+	char algo[64] = { 0 };
 	const char *job_id, *prevhash, *coinb1, *coinb2, *version, *nbits, *ntime;
-	const char *claim = NULL;
+	const char *extradata = NULL;
 	size_t coinb1_size, coinb2_size;
 	bool clean, ret = false;
 	int merkle_count, i, p=0;
-	bool has_claim = json_array_size(params) == 10; // todo: use opt_algo
+	bool has_claim, has_roots;
 	json_t *merkle_arr;
 	uchar **merkle;
+
+	get_currentalgo(algo, sizeof(algo));
+	has_claim = strcmp(algo, "lbry") == 0 && json_array_size(params) == 10;
+	has_roots = strcmp(algo, "phi2") == 0 && json_array_size(params) == 10;
 
 	job_id = json_string_value(json_array_get(params, p++));
 	prevhash = json_string_value(json_array_get(params, p++));
 	if (has_claim) {
-		claim = json_string_value(json_array_get(params, p++));
-		if (!claim || strlen(claim) != 64) {
+		extradata = json_string_value(json_array_get(params, p++));
+		if (!extradata || strlen(extradata) != 64) {
 			applog(LOG_ERR, "Stratum notify: invalid claim parameter");
+			goto out;
+		}
+	}
+	else if (has_roots) {
+		extradata = json_string_value(json_array_get(params, p++));
+		if (!extradata || strlen(extradata) != 128) {
+			applog(LOG_ERR, "Stratum notify: invalid UTXO root parameter");
 			goto out;
 		}
 	}
@@ -1748,7 +1760,8 @@ static bool stratum_notify(struct stratum_ctx *sctx, json_t *params)
 	sctx->job.job_id = strdup(job_id);
 	hex2bin(sctx->job.prevhash, prevhash, 32);
 
-	if (has_claim) hex2bin(sctx->job.claim, claim, 32);
+	if (has_claim) hex2bin(sctx->job.extra, extradata, 32);
+	if (has_roots) hex2bin(sctx->job.extra, extradata, 64);
 
 	sctx->bloc_height = getblocheight(sctx);
 
@@ -2313,6 +2326,9 @@ void print_hash_tests(void)
 	memset(buf, 0, sizeof(buf));
 	//buf[0] = 1; buf[64] = 2; // for endian tests
 
+	allium_hash(&hash[0], &buf[0]);
+	printpfx("allium", hash);
+
 	axiomhash(&hash[0], &buf[0]);
 	printpfx("axiom", hash);
 
@@ -2325,6 +2341,9 @@ void print_hash_tests(void)
 	blakecoinhash(&hash[0], &buf[0]);
 	printpfx("blakecoin", hash);
 
+	blake2b_hash(&hash[0], &buf[0]);
+	printpfx("blake2b", hash);
+
 	blake2s_hash(&hash[0], &buf[0]);
 	printpfx("blake2s", hash);
 
@@ -2334,10 +2353,10 @@ void print_hash_tests(void)
 	c11hash(&hash[0], &buf[0]);
 	printpfx("c11", hash);
 
-	cryptolight_hash(&hash[0], &buf[0], 76);
+	cryptolight_hash(&hash[0], &buf[0]);
 	printpfx("cryptolight", hash);
 
-	cryptonight_hash(&hash[0], &buf[0], 76);
+	cryptonight_hash_v1(&hash[0], &buf[0]);
 	printpfx("cryptonight", hash);
 
 	decred_hash(&hash[0], &buf[0]);
@@ -2348,6 +2367,9 @@ void print_hash_tests(void)
 
 	freshhash(&hash[0], &buf[0], 80);
 	printpfx("fresh", hash);
+
+	geekhash(&hash[0], &buf[0]);
+	printpfx("geek", hash);
 
 	groestlhash(&hash[0], &buf[0]);
 	printpfx("groestl", hash);
@@ -2373,6 +2395,12 @@ void print_hash_tests(void)
 	lyra2rev2_hash(&hash[0], &buf[0]);
 	printpfx("lyra2v2", hash);
 
+	lyra2v3_hash(&hash[0], &buf[0]);
+	printpfx("lyra2v3", hash);
+
+	cryptonight_hash(&hash[0], &buf[0]);
+	printpfx("monero", hash);
+
 	myriadhash(&hash[0], &buf[0]);
 	printpfx("myr-gr", hash);
 
@@ -2385,6 +2413,12 @@ void print_hash_tests(void)
 	pentablakehash(&hash[0], &buf[0]);
 	printpfx("pentablake", hash);
 
+	phi1612_hash(&hash[0], &buf[0]);
+	printpfx("phi1612", hash);
+
+	phi2_hash(&hash[0], &buf[0]);
+	printpfx("phi2", hash);
+
 	pluck_hash((uint32_t*)&hash[0], (uint32_t*)&buf[0], scratchbuf, 128);
 	memset(&buf[0], 0, sizeof(buf));
 	printpfx("pluck", hash);
@@ -2395,6 +2429,9 @@ void print_hash_tests(void)
 
 	qubithash(&hash[0], &buf[0]);
 	printpfx("qubit", hash);
+
+	rf256_hash(&hash[0], &buf[0], 80);
+	printpfx("rainforest", hash);
 
 	scrypthash(&hash[0], &buf[0], 1024);
 	printpfx("scrypt", hash);
@@ -2423,6 +2460,9 @@ void print_hash_tests(void)
 	skein2hash(&hash[0], &buf[0]);
 	printpfx("skein2", hash);
 
+	sonoa_hash(&hash[0], &buf[0]);
+	printpfx("sonoa", hash);
+
 	s3hash(&hash[0], &buf[0]);
 	printpfx("s3", hash);
 
@@ -2447,6 +2487,9 @@ void print_hash_tests(void)
 	x11hash(&hash[0], &buf[0]);
 	printpfx("x11", hash);
 
+	x12hash(&hash[0], &buf[0]);
+	printpfx("x12", hash);
+
 	x13hash(&hash[0], &buf[0]);
 	printpfx("x13", hash);
 
@@ -2456,8 +2499,17 @@ void print_hash_tests(void)
 	x15hash(&hash[0], &buf[0]);
 	printpfx("x15", hash);
 
+	x16r_hash(&hash[0], &buf[0]);
+	printpfx("x16r", hash);
+
+	x16s_hash(&hash[0], &buf[0]);
+	printpfx("x16s", hash);
+
 	x17hash(&hash[0], &buf[0]);
 	printpfx("x17", hash);
+
+	x20r_hash(&hash[0], &buf[0]);
+	printpfx("x20r", hash);
 
 	yescrypthash(&hash[0], &buf[0]);
 	printpfx("yescrypt", hash);
