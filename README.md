@@ -162,7 +162,7 @@ _OR_
 #### Architecture-specific notes:
  * ARM:
    * No runtime CPU detection. The miner can take advantage of some instructions specific to ARMv5E and later processors, but the decision whether to use them is made at compile time, based on compiler-defined macros.
-   * To use NEON instructions, add `"-mfpu=neon"` to CFLAGS.
+   * To use NEON instructions, add `'-mfpu=neon'` to CFLAGS.
  * x86:
    * The miner checks for SSE2 instructions support at runtime, and uses them if they are available.
  * x86-64:	
@@ -175,11 +175,11 @@ _OR_
 
 Usage instructions
 ==================
-Run "cpuminer --help" to see options.
+Run `cpuminer --help` to see options.
 
 ### Connecting through a proxy
 
-Use the --proxy option.
+Use the `--proxy` option.
 
 To use a SOCKS proxy, add a socks4:// or socks5:// prefix to the proxy host  
 Protocols socks4a and socks5h, allowing remote name resolving, are also available since libcurl 7.18.0.
