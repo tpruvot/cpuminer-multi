@@ -117,7 +117,7 @@ _OR_
 #### Note for Debian/Ubuntu users:
 
 ```
- apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++
+ apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++ zlib1g-dev
 ```
 
 #### Note for OS X users:
