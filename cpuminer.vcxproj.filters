@@ -85,6 +85,9 @@
     <ClCompile Include="sha3\gost_streebog.c">
       <Filter>sph</Filter>
     </ClCompile>
+    <ClCompile Include="sha3\sph_tiger.c">
+      <Filter>sph</Filter>
+    </ClCompile>
     <ClCompile Include="compat\winansi.c">
       <Filter>compat</Filter>
     </ClCompile>
@@ -315,6 +318,9 @@
     <ClCompile Include="algo\x16r.c">
       <Filter>algo</Filter>
     </ClCompile>
+    <ClCompile Include="algo\x16rv2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
     <ClCompile Include="algo\x16s.c">
       <Filter>algo</Filter>
     </ClCompile>
@@ -438,6 +444,9 @@
       <Filter>sph</Filter>
     </ClInclude>
     <ClInclude Include="sha3\gost_streebog.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_tiger.h">
       <Filter>sph</Filter>
     </ClInclude>
     <ClInclude Include="compat.h">

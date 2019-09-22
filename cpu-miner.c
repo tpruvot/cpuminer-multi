@@ -134,7 +134,8 @@ enum algos {
 	ALGO_X13,         /* X13 */
 	ALGO_X14,         /* X14 */
 	ALGO_X15,         /* X15 */
-	ALGO_X16R,
+	ALGO_X16R,		  /* X16R */
+	ALGO_X16RV2,	  /* X16Rv2 */
 	ALGO_X16S,
 	ALGO_X17,         /* X17 */
 	ALGO_X20R,
@@ -203,6 +204,7 @@ static const char *algo_names[] = {
 	"x14",
 	"x15",
 	"x16r",
+	"x16rv2",
 	"x16s",
 	"x17",
 	"x20r",
@@ -368,6 +370,7 @@ Options:\n\
                           x14          X14\n\
                           x15          X15\n\
                           x16r         X16R (Raven)\n\
+                          x16rv2       X16Rv2 (Raven / Trivechain)\n\
                           x16s         X16S (Pigeon)\n\
                           x17          X17\n\
                           x20r         X20R\n\
@@ -1865,6 +1868,7 @@ static void stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 			case ALGO_BITCORE:
 			case ALGO_XEVAN:
 			case ALGO_X16R:
+			case ALGO_X16RV2:
 			case ALGO_X16S:
 			case ALGO_X20R:
 				work_set_target(work, sctx->job.diff / (256.0 * opt_diff_factor));
@@ -2219,6 +2223,7 @@ static void *miner_thread(void *userdata)
 			case ALGO_TRIBUS:
 			case ALGO_X15:
 			case ALGO_X16R:
+			case ALGO_X16RV2:
 			case ALGO_X16S:
 			case ALGO_X17:
 			case ALGO_X20R:
@@ -2429,6 +2434,9 @@ static void *miner_thread(void *userdata)
 			break;
 		case ALGO_X16R:
 			rc = scanhash_x16r(thr_id, &work, max_nonce, &hashes_done);
+			break;
+		case ALGO_X16RV2:
+			rc = scanhash_x16rv2(thr_id, &work, max_nonce, &hashes_done);
 			break;
 		case ALGO_X20R:
 			rc = scanhash_x20r(thr_id, &work, max_nonce, &hashes_done);

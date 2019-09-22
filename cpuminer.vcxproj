@@ -258,6 +258,7 @@
     <ClCompile Include="algo\x14.c" />
     <ClCompile Include="algo\x15.c" />
     <ClCompile Include="algo\x16r.c" />
+    <ClCompile Include="algo\x16rv2.c" />
     <ClCompile Include="algo\x16s.c" />
     <ClCompile Include="algo\x17.c" />
     <ClCompile Include="algo\x20r.c" />
@@ -295,6 +296,7 @@
     <ClCompile Include="sha3\sph_panama.c" />
     <ClCompile Include="sha3\sph_radiogatun.c" />
     <ClCompile Include="sha3\sph_whirlpool.c" />
+    <ClCompile Include="sha3\sph_tiger.c" />
     <ClCompile Include="sha3\gost_streebog.c" />
     <ClCompile Include="sha3\md_helper.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -367,6 +369,7 @@
     <ClInclude Include="sha3\sph_radiogatun.h" />
     <ClInclude Include="sha3\sph_types.h" />
     <ClInclude Include="sha3\sph_whirlpool.h" />
+    <ClInclude Include="sha3\sph_tiger.h" />
     <ClInclude Include="yescrypt\sha256_Y.h" />
     <ClInclude Include="yescrypt\sysendian.h" />
     <ClInclude Include="yescrypt\yescrypt-platform.h" />
