@@ -134,8 +134,8 @@ enum algos {
 	ALGO_X13,         /* X13 */
 	ALGO_X14,         /* X14 */
 	ALGO_X15,         /* X15 */
-	ALGO_X16R,		  /* X16R */
-	ALGO_X16RV2,	  /* X16Rv2 */
+	ALGO_X16R,        /* X16R */
+	ALGO_X16RV2,      /* X16Rv2 */
 	ALGO_X16S,
 	ALGO_X17,         /* X17 */
 	ALGO_X20R,
