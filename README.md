@@ -162,7 +162,7 @@ _OR_
 #### Architecture-specific notes:
  * ARM:
    * No runtime CPU detection. The miner can take advantage of some instructions specific to ARMv5E and later processors, but the decision whether to use them is made at compile time, based on compiler-defined macros.
-   * To use NEON instructions, add `'-mfpu=neon'` to CFLAGS.
+   * To use NEON instructions, add `-mfpu=neon` to CFLAGS.
  * x86:
    * The miner checks for SSE2 instructions support at runtime, and uses them if they are available.
  * x86-64:	
