@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -236,7 +236,7 @@
     <ClCompile Include="algo\pluck.c" />
     <ClCompile Include="algo\quark.c" />
     <ClCompile Include="algo\qubit.c" />
-    <ClCompile Include="algo\rainforest.c" />
+    <ClCompile Include="algo\rfv2_cpuminer.c" />
     <ClCompile Include="algo\s3.c" />
     <ClCompile Include="algo\sha2.c" />
     <ClCompile Include="algo\sia.c" />

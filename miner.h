@@ -234,7 +234,7 @@ int scanhash_pluck(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *
 int scanhash_quark(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 void init_quarkhash_contexts();
 int scanhash_qubit(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
-int scanhash_rf256(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
+int scanhash_rfv2(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 int scanhash_sha256d(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done);
 unsigned char *scrypt_buffer_alloc(int N);
 int scanhash_scrypt(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done,
@@ -536,7 +536,7 @@ void phi2_hash(void *state, const void *input);
 void pluck_hash(uint32_t *hash, const uint32_t *data, uchar *hashbuffer, const int N);
 void pentablakehash(void *output, const void *input);
 void qubithash(void *output, const void *input);
-void rf256_hash(void *out, const void *in, size_t len);
+int rfv2_hash(void *out, const void *in, size_t len, void *rambox, const void *tpl);
 void scrypthash(void *output, const void *input, uint32_t N);
 void scryptjanehash(void *output, const void *input, uint32_t Nfactor);
 void sibhash(void *output, const void *input);

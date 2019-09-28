@@ -90,7 +90,7 @@ cpuminer_SOURCES = \
   algo/nist5.c \
   algo/pluck.c \
   algo/qubit.c \
-  algo/rainforest.c \
+  algo/rfv2_cpuminer.c \
   algo/scrypt.c \
   algo/scrypt-jane.c \
   algo/sha2.c \
