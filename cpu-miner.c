@@ -300,6 +300,9 @@ char *opt_api_allow = NULL;
 int opt_api_remote = 0;
 int opt_api_listen = 4048; /* 0 to disable */
 
+// FLO Blockchain
+char *opt_flodata = NULL;
+
 #ifdef HAVE_GETOPT_LONG
 #include <getopt.h>
 #else
@@ -377,6 +380,7 @@ Options:\n\
                           xevan        Xevan (BitSend)\n\
                           yescrypt     Yescrypt\n\
                           zr5          ZR5\n\
+  -l, --flodata=MESSAGE	message for flodata field\n\
   -o, --url=URL         URL of mining server\n\
   -O, --userpass=U:P    username:password pair for mining server\n\
   -u, --user=USERNAME   username for mining server\n\
@@ -434,7 +438,7 @@ static char const short_options[] =
 #ifdef HAVE_SYSLOG_H
 	"S"
 #endif
-	"a:b:Bc:CDf:hm:n:p:Px:qr:R:s:t:T:o:u:O:V";
+	"a:b:Bc:CDf:hm:n:p:Px:qr:R:s:t:T:o:u:O:Vl:";
 
 static struct option const options[] = {
 	{ "algo", 1, NULL, 'a' },
@@ -454,6 +458,7 @@ static struct option const options[] = {
 	{ "diff-factor", 1, NULL, 'f' },
 	{ "diff", 1, NULL, 'f' }, // deprecated (alias)
 	{ "diff-multiplier", 1, NULL, 'm' },
+	{ "flodata", 1, NULL, 'l' },
 	{ "help", 0, NULL, 'h' },
 	{ "nfactor", 1, NULL, 'n' },
 	{ "no-gbt", 0, NULL, 1011 },
@@ -887,7 +892,12 @@ static bool gbt_work_decode(const json_t *val, struct work *work)
 		}
 		cbvalue = (int64_t) (json_is_integer(tmp) ? json_integer_value(tmp) : json_number_value(tmp));
 		cbtx = (uchar*) malloc(256);
-		le32enc((uint32_t *)cbtx, 1); /* version */
+		/* version == 1 if no flodata message, 2 if flodata message set */
+		if (opt_flodata == NULL) {
+                    le32enc((uint32_t *)cbtx, 1);
+		} else {
+		    le32enc((uint32_t *)cbtx, 2);
+		}
 		cbtx[4] = 1; /* in-counter */
 		memset(cbtx+5, 0x00, 32); /* prev txout hash */
 		le32enc((uint32_t *)(cbtx+37), 0xffffffff); /* prev txout index */
@@ -913,6 +923,14 @@ static bool gbt_work_decode(const json_t *val, struct work *work)
 		cbtx_size += (int) pk_script_size;
 		le32enc((uint32_t *)(cbtx+cbtx_size), 0); /* lock time */
 		cbtx_size += 4;
+
+		if (opt_flodata != NULL) {
+		    char floDataLen = strlen(opt_flodata); // only works if floData is less than 252 chars
+		    cbtx[cbtx_size++] = floDataLen;    // else the encoded varInt will be wrong
+		    memcpy(cbtx+cbtx_size, opt_flodata, floDataLen);
+		    cbtx_size += floDataLen;
+		}
+
 		coinbase_append = true;
 	}
 	if (coinbase_append) {
@@ -3301,6 +3319,10 @@ void parse_arg(int key, char *arg)
 		p = strstr(arg, "G");
 		if (p) d *= 1e9;
 		opt_max_rate = d;
+		break;
+	case 'l': // flodata message
+		free(opt_flodata);
+		opt_flodata = strdup(arg);
 		break;
 	case 1024:
 		opt_randomize = true;
