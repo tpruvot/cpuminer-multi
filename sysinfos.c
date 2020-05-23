@@ -25,6 +25,8 @@
  "/sys/class/hwmon/hwmon0/temp2_input"
 #define HWMON_ALT5 \
  "/sys/class/hwmon/hwmon0/device/temp1_input"
+#define HWMON_ALT6 \
+ "/sys/class/thermal/thermal_zone0/temp"
 
 static float linux_cputemp(int core)
 {
@@ -46,6 +48,9 @@ static float linux_cputemp(int core)
 
 	if (!fd)
                 fd = fopen(HWMON_ALT5, "r");
+
+	if (!fd)
+                fd = fopen(HWMON_ALT6, "r");
 
 	if (!fd)
 		return tc;
