@@ -20,18 +20,18 @@
 
 void x11hash(void *output, const void *input)
 {
-	sph_blake512_context     ctx_blake;
-	sph_bmw512_context       ctx_bmw;
-	sph_groestl512_context   ctx_groestl;
-	sph_skein512_context     ctx_skein;
-	sph_jh512_context        ctx_jh;
-	sph_keccak512_context    ctx_keccak;
+	sph_blake512_context     	ctx_blake;
+	sph_bmw512_context       	ctx_bmw;
+	sph_groestl512_context   	ctx_groestl;
+	sph_skein512_context     	ctx_skein;
+	sph_jh512_context        	ctx_jh;
+	sph_keccak512_context    	ctx_keccak;
 
 	sph_luffa512_context		ctx_luffa1;
 	sph_cubehash512_context		ctx_cubehash1;
 	sph_shavite512_context		ctx_shavite1;
-	sph_simd512_context		ctx_simd1;
-	sph_echo512_context		ctx_echo1;
+	sph_simd512_context			ctx_simd1;
+	sph_echo512_context			ctx_echo1;
 
 	//these uint512 in the c++ source of the client are backed by an array of uint32
 	uint32_t _ALIGN(64) hashA[16], hashB[16];
