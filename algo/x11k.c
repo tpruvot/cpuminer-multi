@@ -185,7 +185,7 @@ void *Simd512(void *oHash, const void *iHash)
 	memcpy(oHash, pHash, 64);
 }
 
-char *fnHashX11K = {
+void *fnHashX11K[] = {
 	Blake512,
 	Bmw512,
 	Groestl512,
