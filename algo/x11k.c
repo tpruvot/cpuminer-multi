@@ -17,6 +17,7 @@
 #include "sha3/sph_simd.h"
 #include "sha3/sph_echo.h"
 
+uint32_t _ALIGN(64) pHash[16];
 
 const uint64_t GetUint64(const void *data, int pos)
 {
@@ -33,9 +34,6 @@ const uint64_t GetUint64(const void *data, int pos)
 
 void *Blake512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_blake512_context ctx_blake;
 
 	sph_blake512_init(&ctx_blake);
@@ -47,9 +45,6 @@ void *Blake512(void *oHash, const void *iHash)
 
 void *Bmw512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_bmw512_context ctx_bmw;
 
 	sph_bmw512_init(&ctx_bmw);
@@ -61,9 +56,6 @@ void *Bmw512(void *oHash, const void *iHash)
 
 void *Groestl512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_groestl512_context ctx_groestl;
 
 	sph_groestl512_init(&ctx_groestl);
@@ -75,9 +67,6 @@ void *Groestl512(void *oHash, const void *iHash)
 
 void *Skein512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_skein512_context ctx_skein;
 
 	sph_skein512_init(&ctx_skein);
@@ -89,9 +78,6 @@ void *Skein512(void *oHash, const void *iHash)
 
 void *Jh512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_jh512_context ctx_jh;
 
 	sph_jh512_init(&ctx_jh);
@@ -103,9 +89,6 @@ void *Jh512(void *oHash, const void *iHash)
 
 void *Keccak512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_keccak512_context ctx_keccak;
 
 	sph_keccak512_init(&ctx_keccak);
@@ -115,25 +98,8 @@ void *Keccak512(void *oHash, const void *iHash)
 	memcpy(oHash, pHash, 64);
 }
 
-void *Echo512(void *oHash, const void *iHash)
-{
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
-	sph_echo512_context	ctx_echo1;
-
-	sph_echo512_init (&ctx_echo1);
-	sph_echo512 (&ctx_echo1, iHash, 64);
-	sph_echo512_close(&ctx_echo1, pHash);
-
-	memcpy(oHash, pHash, 64);
-}
-
 void *Luffa512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_luffa512_context ctx_luffa1;
 
 	sph_luffa512_init (&ctx_luffa1);
@@ -145,9 +111,6 @@ void *Luffa512(void *oHash, const void *iHash)
 
 void *Cubehash512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_cubehash512_context	ctx_cubehash1;
 
 	sph_cubehash512_init (&ctx_cubehash1);
@@ -159,9 +122,6 @@ void *Cubehash512(void *oHash, const void *iHash)
 
 void *Shavite512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_shavite512_context ctx_shavite1;
 
 	sph_shavite512_init (&ctx_shavite1);
@@ -173,14 +133,22 @@ void *Shavite512(void *oHash, const void *iHash)
 
 void *Simd512(void *oHash, const void *iHash)
 {
-	//these uint512 in the c++ source of the client are backed by an array of uint32
-	uint32_t _ALIGN(64) pHash[16];
-
 	sph_simd512_context	ctx_simd1;
 
 	sph_simd512_init (&ctx_simd1);
 	sph_simd512 (&ctx_simd1, iHash, 64);
 	sph_simd512_close(&ctx_simd1, pHash);
+
+	memcpy(oHash, pHash, 64);
+}
+
+void *Echo512(void *oHash, const void *iHash)
+{
+	sph_echo512_context	ctx_echo1;
+
+	sph_echo512_init (&ctx_echo1);
+	sph_echo512 (&ctx_echo1, iHash, 64);
+	sph_echo512_close(&ctx_echo1, pHash);
 
 	memcpy(oHash, pHash, 64);
 }
@@ -192,11 +160,11 @@ void *fnHashX11K[] = {
 	Skein512,
 	Jh512,
 	Keccak512,
-	Echo512,
 	Luffa512,
 	Cubehash512,
 	Shavite512,
 	Simd512,
+	Echo512,
 };
 
 void processHash(void *oHash, const void *iHash, int index)
