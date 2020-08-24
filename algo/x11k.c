@@ -17,19 +17,6 @@
 #include "sha3/sph_simd.h"
 #include "sha3/sph_echo.h"
 
-const uint64_t GetUint64(const void *data, int pos)
-{
-	const uint8_t *ptr = data + pos * 8;
-	return ((uint64_t)ptr[0]) | \
-			((uint64_t)ptr[1]) << 8 | \
-			((uint64_t)ptr[2]) << 16 | \
-			((uint64_t)ptr[3]) << 24 | \
-			((uint64_t)ptr[4]) << 32 | \
-			((uint64_t)ptr[5]) << 40 | \
-			((uint64_t)ptr[6]) << 48 | \
-			((uint64_t)ptr[7]) << 56;
-}
-
 void *Blake512(void *oHash, const void *iHash, const size_t len)
 {
 	sph_blake512_context ctx_blake;
@@ -151,19 +138,26 @@ void processHash(void *oHash, const void *iHash, const int index, const size_t l
 	(*hashX11k)(oHash, iHash, len);
 }
 
-void x11khash(void *output, const void *input)
+const void* memPool = NULL;
+
+void x11khash(void *output, const void *input, int thr_id)
 {
 	const int HASHX11K_NUMBER_ITERATIONS = 64;
+	const int HASHX11K_NUMBER_ALGOS = 11;
 
-	void* hashA = (void*) malloc(64);
-	void* hashB = (void*) malloc(64);
+	if(memPool == NULL) {
+		memPool = (void*) malloc(2 * 64 * 128);
+	}
+
+	void* hashA = (void*) memPool + (thr_id * 128);
+	void* hashB = (void*) memPool + (thr_id * 128) + 64;
 
 	// Iteration 0
 	processHash(hashA, input, 0, 80);
 
 	for(int i = 1; i < HASHX11K_NUMBER_ITERATIONS; i++) {
-		uint64_t index = GetUint64(hashA, i % 8) % 11;
-		processHash(hashB, hashA, index, 64);
+        unsigned char * p = hashA;
+		processHash(hashB, hashA, p[i] % HASHX11K_NUMBER_ALGOS, 64);
        
 	    void* t = hashA;
 		hashA = hashB;
@@ -171,9 +165,6 @@ void x11khash(void *output, const void *input)
 	}
 
 	memcpy(output, hashA, 32);
-
-	free(hashA);
-	free(hashB);
 }
 
 int scanhash_x11k(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
@@ -196,7 +187,7 @@ int scanhash_x11k(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *h
 
 	do {
 		be32enc(&endiandata[19], nonce);
-		x11khash(hash, endiandata);
+		x11khash(hash, endiandata, thr_id);
 
 		if (hash[7] <= Htarg && fulltest(hash, ptarget)) {
 			work_set_target_ratio(work, hash);

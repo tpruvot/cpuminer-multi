@@ -3436,13 +3436,6 @@ void get_defconfig_path(char *out, size_t bufsize, char *argv0);
 
 int main(int argc, char *argv[]) {
 
-	unsigned char* hello = "12345678901234567890123456789012345678901234567890123456789012345678901234567890";
-	unsigned char buffer[32]; 
-
-	x11khash(buffer, hello);
-
-	printf("%s\n", abin2hex(buffer, 32));
-
 	struct thr_info *thr;
 	long flags;
 	int i, err;

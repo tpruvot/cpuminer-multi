@@ -2487,7 +2487,7 @@ void print_hash_tests(void)
 	x11hash(&hash[0], &buf[0]);
 	printpfx("x11", hash);
 
-	x11khash(&hash[0], &buf[0]);
+	x11khash(&hash[0], &buf[0], 0);
 	printpfx("x11k", hash);
 
 	x12hash(&hash[0], &buf[0]);
