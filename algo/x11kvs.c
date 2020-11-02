@@ -48,10 +48,6 @@ void x11kv(void *output, const void *input, int thr_id)
 {
 	const void* memPool = NULL;
 
-	const int HASHX11K_NUMBER_ITERATIONS = 64;
-	const int HASHX11K_NUMBER_ALGOS = 11;
-
-	// uint32_t _ALIGN(64) hashA[64/4], hashB[64/4];
 	if(memPool == NULL) {
 		memPool = (void*) malloc(2 * 64 * 128);
 	}
@@ -69,7 +65,7 @@ void x11kv(void *output, const void *input, int thr_id)
 	for(int i = 1; i < n; i++) {
 		p = (unsigned char *) hashA;
 
-		processHash(hashB, hashA, p[i % 64] % HASHX11K_NUMBER_ALGOS, 64);
+		processHash(hashB, hashA, p[i % 64] % HASHX11KV_NUMBER_ALGOS, 64);
        
 		memcpy(hashA, hashB, 64);
 	    void* t = hashA;
