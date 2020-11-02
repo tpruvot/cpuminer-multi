@@ -2490,6 +2490,9 @@ void print_hash_tests(void)
 	x11khash(&hash[0], &buf[0], 0);
 	printpfx("x11k", hash);
 
+	x11kvshash(&hash[0], &buf[0], 0, 7);
+	printpfx("x11kvs", hash);
+
 	x12hash(&hash[0], &buf[0]);
 	printpfx("x12", hash);
 

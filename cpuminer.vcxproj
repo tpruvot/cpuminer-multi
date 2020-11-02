@@ -254,6 +254,7 @@
     <ClCompile Include="algo\x11evo.c" />
     <ClCompile Include="algo\x11.c" />
     <ClCompile Include="algo\x11k.c" />
+    <ClCompile Include="algo\x11kvs.c" />
     <ClCompile Include="algo\x12.c" />
     <ClCompile Include="algo\x13.c" />
     <ClCompile Include="algo\x14.c" />

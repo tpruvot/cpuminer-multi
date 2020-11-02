@@ -145,6 +145,7 @@ void x11khash(void *output, const void *input, int thr_id)
 	const int HASHX11K_NUMBER_ITERATIONS = 64;
 	const int HASHX11K_NUMBER_ALGOS = 11;
 
+	// uint32_t _ALIGN(64) hashA[64/4], hashB[64/4];
 	if(memPool == NULL) {
 		memPool = (void*) malloc(2 * 64 * 128);
 	}
@@ -152,13 +153,18 @@ void x11khash(void *output, const void *input, int thr_id)
 	void* hashA = (void*) memPool + (thr_id * 128);
 	void* hashB = (void*) memPool + (thr_id * 128) + 64;
 
+	unsigned char *p;
+
 	// Iteration 0
 	processHash(hashA, input, 0, 80);
 
 	for(int i = 1; i < HASHX11K_NUMBER_ITERATIONS; i++) {
-        unsigned char * p = hashA;
+        // unsigned char * p = hashA;
+		p = (unsigned char *) hashA;
+
 		processHash(hashB, hashA, p[i] % HASHX11K_NUMBER_ALGOS, 64);
        
+		memcpy(hashA, hashB, 64);
 	    void* t = hashA;
 		hashA = hashB;
 		hashB = t;
