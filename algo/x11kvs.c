@@ -63,10 +63,10 @@ void x11kv(void *output, const void *input, int thr_id)
 
 	// Iteration 0
 	processHash(hashA, input, 0, 80);
-	unsigned int n = HASHX11KV_MIN_NUMBER_ITERATIONS + ((unsigned int) hashA + 63 % (HASHX11KV_MAX_NUMBER_ITERATIONS - HASHX11KV_MIN_NUMBER_ITERATIONS + 1));
+	p = hashA;
+	unsigned int n = HASHX11KV_MIN_NUMBER_ITERATIONS + (p[63] % (HASHX11KV_MAX_NUMBER_ITERATIONS - HASHX11KV_MIN_NUMBER_ITERATIONS + 1));
 
 	for(int i = 1; i < n; i++) {
-        unsigned char * p = hashA;
 		p = (unsigned char *) hashA;
 
 		processHash(hashB, hashA, p[i % 64] % HASHX11K_NUMBER_ALGOS, 64);
@@ -85,14 +85,14 @@ const unsigned int HASHX11KVS_MAX_LEVEL = 7;
 const unsigned int HASHX11KVS_MIN_LEVEL = 1;
 const unsigned int HASHX11KVS_MAX_DRIFT = 0xFFFF;
 
-void x11kvshash(void *output, const void *input, int thr_id, unsigned int level)
+void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int level)
 {
     void *hash;
 	x11kv(hash, input, thr_id);
     
 	if (level == HASHX11KVS_MIN_LEVEL)
 	{
-		memcpy(output, hash, 32);
+		memcpy(output, hash, 64);
 		return;
 	}
 
@@ -118,16 +118,25 @@ void x11kvshash(void *output, const void *input, int thr_id, unsigned int level)
 	memcpy(nexheader1Pointer, nextheader1, 80);
 	memcpy(nexheader2Pointer, nextheader2, 80);
 
-	x11kvshash(hash1, nexheader1Pointer, thr_id, level - 1);
-    x11kvshash(hash2, nexheader2Pointer, thr_id, level - 1);
+	x11kvshash_base(hash1, nexheader1Pointer, thr_id, level - 1);
+    x11kvshash_base(hash2, nexheader2Pointer, thr_id, level - 1);
 
 	// Concat hash1 and hash2
 	void *hashFinal;
 	memcpy(hashFinal, hash1, 32);
 	memcpy(hashFinal + 32, hash2, 32);
 
-	memcpy(output, hashFinal, 32);
+	memcpy(output, hashFinal, 64);
 }
+
+void x11kvshash(void *output, const void *input, int thr_id)
+{
+	void *output1;
+	x11kvshash_base(output1, input, thr_id, HASHX11KVS_MAX_LEVEL);
+
+	memcpy(output, output1, 32);
+}
+
 
 int scanhash_x11kvs(int thr_id, struct work *work, uint32_t max_nonce, uint64_t *hashes_done)
 {
@@ -149,7 +158,7 @@ int scanhash_x11kvs(int thr_id, struct work *work, uint32_t max_nonce, uint64_t 
 
 	do {
 		be32enc(&endiandata[19], nonce);
-		x11kvshash(hash, endiandata, thr_id, HASHX11KVS_MAX_LEVEL);
+		x11kvshash(hash, endiandata, thr_id);
 
 		if (hash[7] <= Htarg && fulltest(hash, ptarget)) {
 			work_set_target_ratio(work, hash);
