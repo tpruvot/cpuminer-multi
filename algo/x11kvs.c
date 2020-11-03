@@ -107,10 +107,10 @@ void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int l
     memcpy(nextheader2, input, 76);
     le32enc(nextheader2 + 76, nextnonce2);
 
-    void *hash1 = malloc(32);;
-	void *hash2 = malloc(32);;
-	void *nextheader1Pointer = malloc(80);;
-    void *nextheader2Pointer = malloc(80);;
+    void *hash1 = malloc(32);
+	void *hash2 = malloc(32);
+	void *nextheader1Pointer = malloc(80);
+    void *nextheader2Pointer = malloc(80);
     
 	memcpy(nextheader1Pointer, nextheader1, 80);
 	memcpy(nextheader2Pointer, nextheader2, 80);
