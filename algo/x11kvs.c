@@ -124,9 +124,9 @@ void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int l
 	memcpy(hashConcated + 32, hash1, 32);
 	memcpy(hashConcated + 32 + 32, hash2, 32);
 
-	const unsigned char *data =  (const unsigned char *) hashConcated;
+	const uint8_t *data =  (const uint8_t *) hashConcated;
 
-	unsigned char *hashFinal = malloc(64);
+	uint8_t *hashFinal = malloc(64);
 	sha256d(hashFinal, data, 64);
 
 	memcpy(output, hashFinal, 32);
