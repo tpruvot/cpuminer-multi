@@ -121,8 +121,6 @@ void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int l
 
 	sha256d(output, hashConcated, 96);
 
-	memcpy(output, hash, 32);
-
 	free(hash);
 	free(hash1);
 	free(hash2);
