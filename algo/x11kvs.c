@@ -77,9 +77,9 @@ void x11kv(void *output, const void *input, int thr_id)
 	memcpy(output, hashA, 32);
 }
 
-const unsigned int HASHX11KVS_MAX_LEVEL = 4;
+const unsigned int HASHX11KVS_MAX_LEVEL = 7;
 const unsigned int HASHX11KVS_MIN_LEVEL = 1;
-const unsigned int HASHX11KVS_MAX_DRIFT = 0xF;
+const unsigned int HASHX11KVS_MAX_DRIFT = 0xFFFF;
 
 void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int level)
 {
