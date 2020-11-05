@@ -85,10 +85,14 @@ const uint32_t HASHX11KVS_CACHE_POSITIONS	= 0xFFFF;
 const uint32_t HASHX11KVS_CACHE_POSITIONS_2	= 0xFFFF * 2;
 const uint32_t HASHX11KVS_CACHE_POSITIONS_3	= 0xFFFF * 3;
 const uint32_t HASHX11KVS_CACHE_POSITIONS_4	= 0xFFFF * 4;
+const uint32_t HASHX11KVS_CACHE_POSITIONS_5	= 0xFFFF * 5;
+const uint32_t HASHX11KVS_CACHE_POSITIONS_6	= 0xFFFF * 6;
 const uint32_t HASHX11KVS_CACHE_SIZE		= 0xFFFF * 33;
 const uint32_t HASHX11KVS_CACHE_SIZE_2		= 0xFFFF * 33 + 0xFFFF * 33 * 2;
 const uint32_t HASHX11KVS_CACHE_SIZE_3		= 0xFFFF * 33 + 0xFFFF * 33 * 2 + 0xFFFF * 33 * 3; 
 const uint32_t HASHX11KVS_CACHE_SIZE_4		= 0xFFFF * 33 + 0xFFFF * 33 * 2 + 0xFFFF * 33 * 3 + 0xFFFF * 33 * 4;
+const uint32_t HASHX11KVS_CACHE_SIZE_5		= 0xFFFF * 33 + 0xFFFF * 33 * 2 + 0xFFFF * 33 * 3 + 0xFFFF * 33 * 4 + 0xFFFF * 33 * 5;
+const uint32_t HASHX11KVS_CACHE_SIZE_6		= 0xFFFF * 33 + 0xFFFF * 33 * 2 + 0xFFFF * 33 * 3 + 0xFFFF * 33 * 4 + 0xFFFF * 33 * 5 + 0xFFFF * 33 * 6;
 
 void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int level, uint32_t nonce, uint8_t* cache)
 {
@@ -112,12 +116,24 @@ void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int l
 		return;
 	}
 
+	if(level == HASHX11KVS_MAX_LEVEL - 5 && cache[HASHX11KVS_CACHE_SIZE_4 + (nonce % HASHX11KVS_CACHE_POSITIONS_5) * HASHX11KVS_CACHE_CHUNK] == 0xFF) { // cache hit
+		memcpy(output, cache + HASHX11KVS_CACHE_SIZE_4 + ((nonce % HASHX11KVS_CACHE_POSITIONS_5) * HASHX11KVS_CACHE_CHUNK) + 1, 32);
+		return;
+	}
+
+	if(level == HASHX11KVS_MAX_LEVEL - 6 && cache[HASHX11KVS_CACHE_SIZE_5 + (nonce % HASHX11KVS_CACHE_POSITIONS_6) * HASHX11KVS_CACHE_CHUNK] == 0xFF) { // cache hit
+		memcpy(output, cache + HASHX11KVS_CACHE_SIZE_5 + ((nonce % HASHX11KVS_CACHE_POSITIONS_6) * HASHX11KVS_CACHE_CHUNK) + 1, 32);
+		return;
+	}
+
 	uint8_t hash[96];
 	x11kv(hash, input, thr_id);
 
 	if (level == HASHX11KVS_MIN_LEVEL)
 	{
 		memcpy(output, hash, 32);
+		cache[HASHX11KVS_CACHE_SIZE_5 + (nonce % HASHX11KVS_CACHE_POSITIONS_6) * HASHX11KVS_CACHE_CHUNK] = 0xFF;
+		memcpy(cache + HASHX11KVS_CACHE_SIZE_5 + ((nonce % HASHX11KVS_CACHE_POSITIONS_6) * HASHX11KVS_CACHE_CHUNK) + 1, output, 32);
 		return;
 	}
 
@@ -128,6 +144,8 @@ void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int l
 		cache[HASHX11KVS_CACHE_SIZE + ((nonce - 1) % HASHX11KVS_CACHE_POSITIONS_2) * HASHX11KVS_CACHE_CHUNK] = 0x00;
 		cache[HASHX11KVS_CACHE_SIZE_2 + ((nonce - 1) % HASHX11KVS_CACHE_POSITIONS_3) * HASHX11KVS_CACHE_CHUNK] = 0x00;
 		cache[HASHX11KVS_CACHE_SIZE_3 + ((nonce - 1) % HASHX11KVS_CACHE_POSITIONS_4) * HASHX11KVS_CACHE_CHUNK] = 0x00;
+		cache[HASHX11KVS_CACHE_SIZE_4 + ((nonce - 1) % HASHX11KVS_CACHE_POSITIONS_5) * HASHX11KVS_CACHE_CHUNK] = 0x00;
+		cache[HASHX11KVS_CACHE_SIZE_5 + ((nonce - 1) % HASHX11KVS_CACHE_POSITIONS_6) * HASHX11KVS_CACHE_CHUNK] = 0x00;
 	}
 
     uint8_t nextheader1[80];
@@ -171,6 +189,12 @@ void x11kvshash_base(void *output, const void *input, int thr_id, unsigned int l
 		memcpy(cache + HASHX11KVS_CACHE_SIZE_3 + ((nonce % HASHX11KVS_CACHE_POSITIONS_4) * HASHX11KVS_CACHE_CHUNK) + 1, output, 32);
 		return;
 	}
+
+	if(level == HASHX11KVS_MAX_LEVEL - 5) { 
+		cache[HASHX11KVS_CACHE_SIZE_4 + (nonce % HASHX11KVS_CACHE_POSITIONS_5) * HASHX11KVS_CACHE_CHUNK] = 0xFF;
+		memcpy(cache + HASHX11KVS_CACHE_SIZE_4 + ((nonce % HASHX11KVS_CACHE_POSITIONS_5) * HASHX11KVS_CACHE_CHUNK) + 1, output, 32);
+		return;
+	}
 }
 
 void x11kvshash(void *output, const void *input, int thr_id, uint8_t* cache)
@@ -184,9 +208,9 @@ int scanhash_x11kvs(int thr_id, struct work *work, uint32_t max_nonce, uint64_t 
 	uint32_t _ALIGN(128) endiandata[20];
 	uint32_t *pdata = work->data;
 	uint32_t *ptarget = work->target;
-	uint8_t	 *cache = (uint8_t*) malloc(HASHX11KVS_CACHE_SIZE_4);
+	uint8_t	 *cache = (uint8_t*) malloc(HASHX11KVS_CACHE_SIZE_6);
 
-	memset(cache, 0x00, HASHX11KVS_CACHE_SIZE_4);
+	memset(cache, 0x00, HASHX11KVS_CACHE_SIZE_6);
 
 	const uint32_t Htarg = ptarget[7];
 	const uint32_t first_nonce = pdata[19];
