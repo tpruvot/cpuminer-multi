@@ -186,7 +186,7 @@ int scanhash_x11kvs(int thr_id, struct work *work, uint32_t max_nonce, uint64_t 
 	uint32_t *ptarget = work->target;
 	uint8_t	 *cache = (uint8_t*) malloc(HASHX11KVS_CACHE_SIZE_4);
 
-	memset(cache, 0x00, HASHX11KVS_CACHE_SIZE_3);
+	memset(cache, 0x00, HASHX11KVS_CACHE_SIZE_4);
 
 	const uint32_t Htarg = ptarget[7];
 	const uint32_t first_nonce = pdata[19];
