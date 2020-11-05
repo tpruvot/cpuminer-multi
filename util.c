@@ -2490,7 +2490,7 @@ void print_hash_tests(void)
 	x11khash(&hash[0], &buf[0], 0);
 	printpfx("x11k", hash);
 
-	x11kvshash(&hash[0], &buf[0], 0);
+	x11kvshash(&hash[0], &buf[0], 0, NULL);
 	printpfx("x11kvs", hash);
 
 	x12hash(&hash[0], &buf[0]);

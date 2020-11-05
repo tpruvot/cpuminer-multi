@@ -554,7 +554,7 @@ void xevan_hash(void *output, const void *input);
 void x11evo_hash(void *output, const void *input);
 void x11hash(void *output, const void *input);
 void x11khash(void *output, const void *input, int thr_id);
-void x11kvshash(void *output, const void *input, int thr_id);
+void x11kvshash(void *output, const void *input, int thr_id, uint8_t* cache);
 void x12hash(void *output, const void *input);
 void x13hash(void *output, const void *input);
 void x14hash(void *output, const void *input);
