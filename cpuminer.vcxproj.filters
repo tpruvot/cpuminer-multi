@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="cpu-miner.c" />
+    <ClCompile Include="util.c" />
+    <ClCompile Include="uint256.cpp" />
+    <ClCompile Include="sha3\sph_blake.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\mod_blakecoin.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_bmw.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_cubehash.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_echo.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_fugue.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_groestl.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_hamsi.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_hamsi_helper.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_haval.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_hefty1.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_jh.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_keccak.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_luffa.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_panama.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_radiogatun.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_ripemd.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_sha2.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_sha2big.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_shabal.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_shavite.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_simd.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_skein.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_whirlpool.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\md_helper.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\aes_helper.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\gost_streebog.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3\sph_tiger.c">
+      <Filter>sph</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\winansi.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\load.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\utf.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\dump.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\hashtable.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\strbuffer.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\gettimeofday.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\getopt\getopt_long.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\value.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\blake2s.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\blake2b.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\c_skein.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\c_jh.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\c_groestl.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\c_blake256.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\aesb.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\oaes_lib.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\hash.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\c_keccak.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="lyra2\Lyra2.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="lyra2\Sponge.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\scrypt-x86.S">
+      <Filter>arch\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\scrypt-x64.S">
+      <Filter>arch\x64</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\sha2-x86.S">
+      <Filter>arch\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\sha2-x64.S">
+      <Filter>arch\x64</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\aesb-x64.S">
+      <Filter>arch\x64</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\aesb-x86.SS">
+      <Filter>arch\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="api.c" />
+    <ClCompile Include="sysinfos.c" />
+    <ClCompile Include="compat\jansson\error.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\memory.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\pack_unpack.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="compat\jansson\strconv.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\allium.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\bastion.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\bitcore.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\blake.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\blakecoin.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\c11.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\cryptolight.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\cryptonight.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\decred.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\fresh.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\geek.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\groestl.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\heavy.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\ink.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\keccak.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\jha.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\lbry.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\luffa.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\lyra2re.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\lyra2rev2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\lyra2v3.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\myr-groestl.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\neoscrypt.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="asm\neoscrypt_asm.S">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\nist5.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\pentablake.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\phi1612.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\phi2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\quark.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\qubit.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\rainforest.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\s3.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\scrypt.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\sha2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\skein.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\timetravel.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\tribus.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\veltor.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x11evo.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x11.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x11k.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x12.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x13.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x14.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x15.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x16r.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x16rv2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x16s.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x17.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\x20r.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\xevan.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\pluck.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\zr5.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\skein2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\blake2.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\drop.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\bmw256.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\axiom.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\scrypt-jane.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\sia.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\sibcoin.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\sonoa.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\yescrypt.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="yescrypt\yescrypt-common.c">
+      <Filter>yescrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="yescrypt\yescrypt-best.c">
+      <Filter>yescrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="yescrypt\sha256_Y.c">
+      <Filter>yescrypt</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sha3\sph_blake.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_bmw.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_cubehash.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_echo.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_fugue.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_groestl.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_hamsi.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_haval.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_hefty1.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_jh.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_keccak.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_luffa.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_panama.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_radiogatun.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_sha2.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_shabal.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_shavite.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_simd.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_skein.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_types.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_whirlpool.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\gost_streebog.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3\sph_tiger.h">
+      <Filter>sph</Filter>
+    </ClInclude>
+    <ClInclude Include="compat.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="elist.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\getopt\getopt.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\inttypes.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\stdbool.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\sys\time.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\unistd.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\winansi.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="miner.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\cpuminer-config.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="uint256.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\jansson\jansson.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="compat\jansson\config.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\blake2s.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\c_skein.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\c_jh.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\c_groestl.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\c_blake256.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\c_keccak.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\oaes_lib.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\hash-ops.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="lyra2\Lyra2.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="lyra2\Sponge.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_salsa.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_salsa-avx.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_salsa-sse2.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-pbkdf2.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-portable.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-portable-x86.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-romix.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-romix-basic.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-romix-template.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-salsa.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-test-vectors.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-chacha.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-hash.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-hash_keccak.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-hash_sha256.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_chacha.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_chacha-avx.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_chacha-sse2.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="scryptjane\scrypt-jane-mix_chacha-ssse3.h">
+      <Filter>scrypt-jane</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\int-util.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="res\resource.h">
+      <Filter>res</Filter>
+    </ClInclude>
+    <ClInclude Include="yescrypt\sha256_Y.h">
+      <Filter>yescrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="yescrypt\sysendian.h">
+      <Filter>yescrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="yescrypt\yescrypt.h">
+      <Filter>yescrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="yescrypt\yescrypt-platform.h">
+      <Filter>yescrypt</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="sph">
+      <UniqueIdentifier>{822b216c-102a-48ca-b62b-7689df410249}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compat">
+      <UniqueIdentifier>{f5e8fc70-27e7-41ab-a14d-2b0462350980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers">
+      <UniqueIdentifier>{343fa430-44d1-4ff7-b15d-8915052fe036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jansson">
+      <UniqueIdentifier>{88b3057f-0bb6-49d4-98a4-551c8bd8ce0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto">
+      <UniqueIdentifier>{d17f8918-3371-4acb-ba63-06be828562a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch">
+      <UniqueIdentifier>{04c96afe-01af-4f5c-9ee7-219481033018}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch\x86">
+      <UniqueIdentifier>{774a7c76-80c0-4a15-983a-022d17e08420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch\x64">
+      <UniqueIdentifier>{e2f9ccb4-db0b-4e4f-9cfd-935e8e0ebb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch\arm">
+      <UniqueIdentifier>{5a05483f-0f3f-43fe-bfd1-a14519e30e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scrypt-jane">
+      <UniqueIdentifier>{5ed226e8-1512-481d-a88d-18644da87dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="algo">
+      <UniqueIdentifier>{34f266e4-b48f-4721-ac34-474b65726498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{5969f6d8-98c0-49c9-8e4c-51c54b5f0e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="yescrypt">
+      <UniqueIdentifier>{678c0f76-3cd5-418b-bc6b-84a10d81f789}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="asm\scrypt-arm.S">
+      <Filter>algo</Filter>
+    </None>
+    <None Include="asm\sha2-arm.S">
+      <Filter>algo</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\cpuminer.ico">
+      <Filter>res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\cpuminer.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

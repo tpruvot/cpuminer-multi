@@ -136,7 +136,7 @@ asm_naked_fn(scrypt_ChunkMix_sse2)
 	a1(pop esi)
 	a1(pop edi)
 	a1(pop ebx)
-	a1(ret 16)
+	aret(16)
 asm_naked_fn_end(scrypt_ChunkMix_sse2)
 
 #endif
@@ -426,7 +426,7 @@ scrypt_ChunkMix_sse2(uint32_t *Bout/*[chunkBytes]*/, uint32_t *Bin/*[chunkBytes]
 		 4  9 14  3
 	*/
 
-	static void STDCALL
+	static void asm_calling_convention
 	salsa_core_tangle_sse2(uint32_t *blocks, size_t count) {
 		uint32_t t;
 		while (count--) {

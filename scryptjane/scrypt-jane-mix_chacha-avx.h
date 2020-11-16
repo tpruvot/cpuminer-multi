@@ -20,8 +20,28 @@ asm_naked_fn(scrypt_ChunkMix_avx)
 	a2(shl edx,6)
 	a2(lea ecx,[edx-64])
 	a2(and eax, eax)
-	a2(vmovdqa xmm4,[ssse3_rotl16_32bit])
-	a2(vmovdqa xmm5,[ssse3_rotl8_32bit])
+	a2(mov ebx, 0x01000302)
+	a2(vmovd xmm4, ebx)
+	a2(mov ebx, 0x05040706)
+	a2(vmovd xmm0, ebx)
+	a2(mov ebx, 0x09080b0a)
+	a2(vmovd xmm1, ebx)
+	a2(mov ebx, 0x0d0c0f0e)
+	a2(vmovd xmm2, ebx)
+	a2(mov ebx, 0x02010003)
+	a2(vmovd xmm5, ebx)
+	a2(mov ebx, 0x06050407)
+	a2(vmovd xmm3, ebx)
+	a2(mov ebx, 0x0a09080b)
+	a2(vmovd xmm6, ebx)
+	a2(mov ebx, 0x0e0d0c0f)
+	a2(vmovd xmm7, ebx)
+	a3(vpunpckldq xmm4, xmm4, xmm0)
+	a3(vpunpckldq xmm5, xmm5, xmm3)
+	a3(vpunpckldq xmm1, xmm1, xmm2)
+	a3(vpunpckldq xmm6, xmm6, xmm7)
+	a3(vpunpcklqdq xmm4, xmm4, xmm1)
+	a3(vpunpcklqdq xmm5, xmm5, xmm6)
 	a2(vmovdqa xmm0,[ecx+esi+0])
 	a2(vmovdqa xmm1,[ecx+esi+16])
 	a2(vmovdqa xmm2,[ecx+esi+32])
@@ -114,7 +134,7 @@ asm_naked_fn(scrypt_ChunkMix_avx)
 	a1(pop esi)
 	a1(pop edi)
 	a1(pop ebx)
-	a1(ret 16)
+	aret(16)
 asm_naked_fn_end(scrypt_ChunkMix_avx)
 
 #endif
@@ -134,12 +154,20 @@ asm_naked_fn(scrypt_ChunkMix_avx)
 	a2(lea rax,[rsi+r9])
 	a2(lea r9,[rdx+r9])
 	a2(and rdx, rdx)
-	a2(vmovdqa xmm4,[ssse3_rotl16_32bit])
-	a2(vmovdqa xmm5,[ssse3_rotl8_32bit])
 	a2(vmovdqa xmm0,[rax+0])
 	a2(vmovdqa xmm1,[rax+16])
 	a2(vmovdqa xmm2,[rax+32])
 	a2(vmovdqa xmm3,[rax+48])
+	a2(mov r8, 0x0504070601000302)
+	a2(mov rax, 0x0d0c0f0e09080b0a)
+	a2(movq xmm4, r8)
+	a2(movq xmm6, rax)
+	a2(mov r8, 0x0605040702010003)
+	a2(mov rax, 0x0e0d0c0f0a09080b)
+	a2(movq xmm5, r8)
+	a2(movq xmm7, rax)
+	a3(vpunpcklqdq xmm4, xmm4, xmm6)
+	a3(vpunpcklqdq xmm5, xmm5, xmm7)
 	a1(jz scrypt_ChunkMix_avx_no_xor1)
 	a3(vpxor xmm0,xmm0,[r9+0])
 	a3(vpxor xmm1,xmm1,[r9+16])
@@ -283,8 +311,9 @@ scrypt_ChunkMix_avx(uint32_t *Bout/*[chunkBytes]*/, uint32_t *Bin/*[chunkBytes]*
 			x3 = _mm_shuffle_epi8(x3, x4);
 			x2 = _mm_add_epi32(x2, x3);
 			x1 = _mm_xor_si128(x1, x2);
-			x6 = x1;
-			x1 = _mm_or_si128(_mm_slli_epi32(x1, 12), _mm_srli_epi32(x6, 20));
+			x6 = _mm_srli_epi32(x1, 20);
+			x1 = _mm_slli_epi32(x1, 12);
+			x1 = _mm_or_si128(x1, x6);
 			x0 = _mm_add_epi32(x0, x1);
 			x3 = _mm_xor_si128(x3, x0);
 			x3 = _mm_shuffle_epi8(x3, x5);
@@ -293,15 +322,17 @@ scrypt_ChunkMix_avx(uint32_t *Bout/*[chunkBytes]*/, uint32_t *Bin/*[chunkBytes]*
 			x3 = _mm_shuffle_epi32(x3, 0x4e);
 			x1 = _mm_xor_si128(x1, x2);
 			x2 = _mm_shuffle_epi32(x2, 0x39);
-			x6 = x1;
-			x1 = _mm_or_si128(_mm_slli_epi32(x1, 7), _mm_srli_epi32(x6, 25));
+			x6 = _mm_srli_epi32(x1, 25);
+			x1 = _mm_slli_epi32(x1, 7);
+			x1 = _mm_or_si128(x1, x6);
 			x0 = _mm_add_epi32(x0, x1);
 			x3 = _mm_xor_si128(x3, x0);
 			x3 = _mm_shuffle_epi8(x3, x4);
 			x2 = _mm_add_epi32(x2, x3);
 			x1 = _mm_xor_si128(x1, x2);
-			x6 = x1;
-			x1 = _mm_or_si128(_mm_slli_epi32(x1, 12), _mm_srli_epi32(x6, 20));
+			x6 = _mm_srli_epi32(x1, 20);
+			x1 = _mm_slli_epi32(x1, 12);
+			x1 = _mm_or_si128(x1, x6);
 			x0 = _mm_add_epi32(x0, x1);
 			x3 = _mm_xor_si128(x3, x0);
 			x3 = _mm_shuffle_epi8(x3, x5);
@@ -310,8 +341,201 @@ scrypt_ChunkMix_avx(uint32_t *Bout/*[chunkBytes]*/, uint32_t *Bin/*[chunkBytes]*
 			x3 = _mm_shuffle_epi32(x3, 0x4e);
 			x1 = _mm_xor_si128(x1, x2);
 			x2 = _mm_shuffle_epi32(x2, 0x93);
-			x6 = x1;
-			x1 = _mm_or_si128(_mm_slli_epi32(x1, 7), _mm_srli_epi32(x6, 25));
+			x6 = _mm_srli_epi32(x1, 25);
+			x1 = _mm_slli_epi32(x1, 7);
+			x1 = _mm_or_si128(x1, x6);
+		}
+
+		x0 = _mm_add_epi32(x0, t0);
+		x1 = _mm_add_epi32(x1, t1);
+		x2 = _mm_add_epi32(x2, t2);
+		x3 = _mm_add_epi32(x3, t3);
+
+		/* 4: Y_i = X */
+		/* 6: B'[0..r-1] = Y_even */
+		/* 6: B'[r..2r-1] = Y_odd */
+		xmmp = (xmmi *)scrypt_block(Bout, (i / 2) + half);
+		xmmp[0] = x0;
+		xmmp[1] = x1;
+		xmmp[2] = x2;
+		xmmp[3] = x3;
+	}
+}
+
+/*
+ * Special version with r = 1 and no XORing
+ *  - mikaelh
+ */
+static void NOINLINE
+scrypt_ChunkMix_avx_1(uint32_t *Bout/*[chunkBytes]*/, uint32_t *Bin/*[chunkBytes]*/) {
+	const uint32_t r = 1;
+	uint32_t i, blocksPerChunk = r * 2, half = 0;
+	xmmi *xmmp,x0,x1,x2,x3,x6,t0,t1,t2,t3;
+	const xmmi x4 = *(xmmi *)&ssse3_rotl16_32bit, x5 = *(xmmi *)&ssse3_rotl8_32bit;
+	size_t rounds;
+
+	/* 1: X = B_{2r - 1} */
+	xmmp = (xmmi *)scrypt_block(Bin, blocksPerChunk - 1);
+	x0 = xmmp[0];
+	x1 = xmmp[1];
+	x2 = xmmp[2];
+	x3 = xmmp[3];
+
+	/* 2: for i = 0 to 2r - 1 do */
+	for (i = 0; i < blocksPerChunk; i++, half ^= r) {
+		/* 3: X = H(X ^ B_i) */
+		xmmp = (xmmi *)scrypt_block(Bin, i);
+		x0 = _mm_xor_si128(x0, xmmp[0]);
+		x1 = _mm_xor_si128(x1, xmmp[1]);
+		x2 = _mm_xor_si128(x2, xmmp[2]);
+		x3 = _mm_xor_si128(x3, xmmp[3]);
+
+		t0 = x0;
+		t1 = x1;
+		t2 = x2;
+		t3 = x3;
+
+		for (rounds = 8; rounds; rounds -= 2) {
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x4);
+			x2 = _mm_add_epi32(x2, x3);
+			x1 = _mm_xor_si128(x1, x2);
+			x6 = _mm_srli_epi32(x1, 20);
+			x1 = _mm_slli_epi32(x1, 12);
+			x1 = _mm_or_si128(x1, x6);
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x5);
+			x0 = _mm_shuffle_epi32(x0, 0x93);
+			x2 = _mm_add_epi32(x2, x3);
+			x3 = _mm_shuffle_epi32(x3, 0x4e);
+			x1 = _mm_xor_si128(x1, x2);
+			x2 = _mm_shuffle_epi32(x2, 0x39);
+			x6 = _mm_srli_epi32(x1, 25);
+			x1 = _mm_slli_epi32(x1, 7);
+			x1 = _mm_or_si128(x1, x6);
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x4);
+			x2 = _mm_add_epi32(x2, x3);
+			x1 = _mm_xor_si128(x1, x2);
+			x6 = _mm_srli_epi32(x1, 20);
+			x1 = _mm_slli_epi32(x1, 12);
+			x1 = _mm_or_si128(x1, x6);
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x5);
+			x0 = _mm_shuffle_epi32(x0, 0x39);
+			x2 = _mm_add_epi32(x2, x3);
+			x3 = _mm_shuffle_epi32(x3, 0x4e);
+			x1 = _mm_xor_si128(x1, x2);
+			x2 = _mm_shuffle_epi32(x2, 0x93);
+			x6 = _mm_srli_epi32(x1, 25);
+			x1 = _mm_slli_epi32(x1, 7);
+			x1 = _mm_or_si128(x1, x6);
+		}
+
+		x0 = _mm_add_epi32(x0, t0);
+		x1 = _mm_add_epi32(x1, t1);
+		x2 = _mm_add_epi32(x2, t2);
+		x3 = _mm_add_epi32(x3, t3);
+
+		/* 4: Y_i = X */
+		/* 6: B'[0..r-1] = Y_even */
+		/* 6: B'[r..2r-1] = Y_odd */
+		xmmp = (xmmi *)scrypt_block(Bout, (i / 2) + half);
+		xmmp[0] = x0;
+		xmmp[1] = x1;
+		xmmp[2] = x2;
+		xmmp[3] = x3;
+	}
+}
+
+/*
+ * Special version with r = 1 and unconditional XORing
+ *  - mikaelh
+ */
+static void NOINLINE
+scrypt_ChunkMix_avx_1_xor(uint32_t *Bout/*[chunkBytes]*/, uint32_t *Bin/*[chunkBytes]*/, uint32_t *Bxor/*[chunkBytes]*/) {
+	const uint32_t r = 1;
+	uint32_t i, blocksPerChunk = r * 2, half = 0;
+	xmmi *xmmp,x0,x1,x2,x3,x6,t0,t1,t2,t3;
+	const xmmi x4 = *(xmmi *)&ssse3_rotl16_32bit, x5 = *(xmmi *)&ssse3_rotl8_32bit;
+	size_t rounds;
+
+	/* 1: X = B_{2r - 1} */
+	xmmp = (xmmi *)scrypt_block(Bin, blocksPerChunk - 1);
+	x0 = xmmp[0];
+	x1 = xmmp[1];
+	x2 = xmmp[2];
+	x3 = xmmp[3];
+
+	xmmp = (xmmi *)scrypt_block(Bxor, blocksPerChunk - 1);
+	x0 = _mm_xor_si128(x0, xmmp[0]);
+	x1 = _mm_xor_si128(x1, xmmp[1]);
+	x2 = _mm_xor_si128(x2, xmmp[2]);
+	x3 = _mm_xor_si128(x3, xmmp[3]);
+
+	/* 2: for i = 0 to 2r - 1 do */
+	for (i = 0; i < blocksPerChunk; i++, half ^= r) {
+		/* 3: X = H(X ^ B_i) */
+		xmmp = (xmmi *)scrypt_block(Bin, i);
+		x0 = _mm_xor_si128(x0, xmmp[0]);
+		x1 = _mm_xor_si128(x1, xmmp[1]);
+		x2 = _mm_xor_si128(x2, xmmp[2]);
+		x3 = _mm_xor_si128(x3, xmmp[3]);
+
+		xmmp = (xmmi *)scrypt_block(Bxor, i);
+		x0 = _mm_xor_si128(x0, xmmp[0]);
+		x1 = _mm_xor_si128(x1, xmmp[1]);
+		x2 = _mm_xor_si128(x2, xmmp[2]);
+		x3 = _mm_xor_si128(x3, xmmp[3]);
+
+		t0 = x0;
+		t1 = x1;
+		t2 = x2;
+		t3 = x3;
+
+		for (rounds = 8; rounds; rounds -= 2) {
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x4);
+			x2 = _mm_add_epi32(x2, x3);
+			x1 = _mm_xor_si128(x1, x2);
+			x6 = _mm_srli_epi32(x1, 20);
+			x1 = _mm_slli_epi32(x1, 12);
+			x1 = _mm_or_si128(x1, x6);
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x5);
+			x0 = _mm_shuffle_epi32(x0, 0x93);
+			x2 = _mm_add_epi32(x2, x3);
+			x3 = _mm_shuffle_epi32(x3, 0x4e);
+			x1 = _mm_xor_si128(x1, x2);
+			x2 = _mm_shuffle_epi32(x2, 0x39);
+			x6 = _mm_srli_epi32(x1, 25);
+			x1 = _mm_slli_epi32(x1, 7);
+			x1 = _mm_or_si128(x1, x6);
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x4);
+			x2 = _mm_add_epi32(x2, x3);
+			x1 = _mm_xor_si128(x1, x2);
+			x6 = _mm_srli_epi32(x1, 20);
+			x1 = _mm_slli_epi32(x1, 12);
+			x1 = _mm_or_si128(x1, x6);
+			x0 = _mm_add_epi32(x0, x1);
+			x3 = _mm_xor_si128(x3, x0);
+			x3 = _mm_shuffle_epi8(x3, x5);
+			x0 = _mm_shuffle_epi32(x0, 0x39);
+			x2 = _mm_add_epi32(x2, x3);
+			x3 = _mm_shuffle_epi32(x3, 0x4e);
+			x1 = _mm_xor_si128(x1, x2);
+			x2 = _mm_shuffle_epi32(x2, 0x93);
+			x6 = _mm_srli_epi32(x1, 25);
+			x1 = _mm_slli_epi32(x1, 7);
+			x1 = _mm_or_si128(x1, x6);
 		}
 
 		x0 = _mm_add_epi32(x0, t0);

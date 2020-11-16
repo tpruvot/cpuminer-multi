@@ -45,6 +45,10 @@
 	#define X86_64USE_INTRINSIC
 #endif
 
+#ifdef __AVX__
+#define X86_INTRINSIC_AVX
+#endif
+
 #if defined(COMPILER_GCC) && defined(CPU_X86_FORCE_INTRINSICS)
 	#define X86_INTRINSIC
 	#if defined(__SSE__)
@@ -59,6 +63,15 @@
 	#if defined(__AVX__)
 		#define X86_INTRINSIC_AVX
 	#endif
+
+	/* HACK - I want to use CPU_X86_FORCE_INTRINSICS with mingw64 so these need to be undefined - mikaelh */
+	#undef X86_64ASM_SSSE3
+	#undef X86_64ASM_AVX
+	#undef X86_64ASM_SSE2
+	#undef X86ASM_AVX
+	#undef X86ASM_SSSE3
+	#undef X86ASM_SSE2
+	#undef X86ASM_SSE
 #endif
 
 /* only use simd on windows (or SSE2 on gcc)! */
@@ -79,6 +92,10 @@
 	#if defined(X86_INTRINSIC_SSSE3)
 		#define X86_INTRINSIC_SSSE3
 		#include <tmmintrin.h>
+	#endif
+	#if defined (X86_INTRINSIC_AVX)
+		#define X86_INTRINSIC_AVX
+		#include <immintrin.h>
 	#endif
 #endif
 
@@ -115,11 +132,9 @@
 	} packedelem64;
 #endif
 
-#if defined(X86_INTRINSIC_SSSE3) || defined(X86ASM_SSSE3) || defined(X86_64ASM_SSSE3)
-	const packedelem8 MM16 ssse3_rotr16_64bit      = {{2,3,4,5,6,7,0,1,10,11,12,13,14,15,8,9}};
-	const packedelem8 MM16 ssse3_rotl16_32bit      = {{2,3,0,1,6,7,4,5,10,11,8,9,14,15,12,13}};
-	const packedelem8 MM16 ssse3_rotl8_32bit       = {{3,0,1,2,7,4,5,6,11,8,9,10,15,12,13,14}};
-	const packedelem8 MM16 ssse3_endian_swap_64bit = {{7,6,5,4,3,2,1,0,15,14,13,12,11,10,9,8}};
+#if defined(X86_INTRINSIC_SSSE3)
+	static const packedelem8 MM16 ssse3_rotl16_32bit      = {{2,3,0,1,6,7,4,5,10,11,8,9,14,15,12,13}};
+	static const packedelem8 MM16 ssse3_rotl8_32bit       = {{3,0,1,2,7,4,5,6,11,8,9,10,15,12,13,14}};
 #endif
 
 /*
@@ -130,7 +145,8 @@
 		a1(..)
 		a2(.., ..)
 		a3(.., .., ..)
-		a1(ret)
+		64bit OR 0 paramters: a1(ret)
+		32bit AND n parameters: aret(4n), eg aret(16) for 4 parameters
 	asm_naked_fn_end(name)
 */
 
@@ -147,7 +163,8 @@
 	#define asm_align8 a1(ALIGN 8)
 	#define asm_align16 a1(ALIGN 16)
 
-	#define asm_naked_fn_proto(type, fn) static NAKED type STDCALL fn
+	#define asm_calling_convention STDCALL
+	#define asm_naked_fn_proto(type, fn) static NAKED type asm_calling_convention fn
 	#define asm_naked_fn(fn) {
 	#define asm_naked_fn_end(fn) }
 #elif defined(COMPILER_GCC)
@@ -156,6 +173,7 @@
 	#define GNU_AS3(x, y, z) #x ", " #y ", " #z ";\n"
 	#define GNU_AS4(x, y, z, w) #x ", " #y ", " #z ", " #w ";\n"
 	#define GNU_ASL(x) "\n" #x ":\n"
+	#define GNU_ASFN(x) "\n_" #x ":\n" #x ":\n"
 	#define GNU_ASJ(x, y, z) #x " " #y #z ";"
 
 	#define a1(x) GNU_AS1(x)
@@ -167,9 +185,18 @@
 	#define asm_align8 a1(.align 8)
 	#define asm_align16 a1(.align 16)
 
-	#define asm_naked_fn_proto(type, fn) extern type STDCALL fn
-	#define asm_naked_fn(fn) ; __asm__ (".intel_syntax noprefix;\n.text\n" asm_align16 GNU_ASL(fn)
-	#define asm_naked_fn_end(fn) ".att_syntax prefix;\n.type  " #fn ",@function\n.size " #fn ",.-" #fn "\n" );
+	#if defined(OS_WINDOWS)
+		#define asm_calling_convention CDECL
+		#define aret(n) a1(ret)
+		#define asm_naked_fn_end(fn) ".att_syntax prefix;\n" );
+	#else
+		#define asm_calling_convention STDCALL
+		#define aret(n) a1(ret n)
+		#define asm_naked_fn_end(fn) ".att_syntax prefix;\n.type  " #fn ",@function\n.size " #fn ",.-" #fn "\n" );
+	#endif
+	#define asm_naked_fn_proto(type, fn) extern type asm_calling_convention fn
+	#define asm_naked_fn(fn) ; __asm__ (".intel_syntax noprefix;\n.text\n" asm_align16 GNU_ASFN(fn)
+
 	#define asm_gcc() __asm__ __volatile__(".intel_syntax noprefix;\n"
 	#define asm_gcc_parms() ".att_syntax prefix;"
 	#define asm_gcc_trashed() __asm__ __volatile__("" :::

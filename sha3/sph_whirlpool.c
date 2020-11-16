@@ -3432,7 +3432,7 @@ ROUND_FUN(whirlpool1, old1)
  * We want big-endian encoding of the message length, over 256 bits. BE64
  * triggers that. However, our block length is 512 bits, not 1024 bits.
  * Internally, our encoding/decoding is little-endian, which is not a
- * problem here since we also deactivate output in sph_x15_helper.c.
+ * problem here since we also deactivate output in md_helper.c.
  */
 #define BE64   1
 #define SVAL   sc->state
@@ -3441,19 +3441,19 @@ ROUND_FUN(whirlpool1, old1)
 
 #define RFUN   whirlpool_round
 #define HASH   whirlpool
-#include "sph_x15_helper.c"
+#include "md_helper.c"
 #undef RFUN
 #undef HASH
 
 #define RFUN   whirlpool0_round
 #define HASH   whirlpool0
-#include "sph_x15_helper.c"
+#include "md_helper.c"
 #undef RFUN
 #undef HASH
 
 #define RFUN   whirlpool1_round
 #define HASH   whirlpool1
-#include "sph_x15_helper.c"
+#include "md_helper.c"
 #undef RFUN
 #undef HASH
 

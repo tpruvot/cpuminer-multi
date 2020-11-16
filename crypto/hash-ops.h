@@ -13,6 +13,7 @@
 
 #include "int-util.h"
 
+#if 0
 static inline void *padd(void *p, size_t i) {
   return (char *) p + i;
 }
@@ -23,11 +24,12 @@ static inline const void *cpadd(const void *p, size_t i) {
 
 static inline void place_length(uint8_t *buffer, size_t bufsize, size_t length) {
   if (sizeof(size_t) == 4) {
-    *(uint32_t *) padd(buffer, bufsize - 4) = swap32be(length);
+    *(uint32_t*) padd(buffer, bufsize - 4) = swap32be(length);
   } else {
-    *(uint64_t *) padd(buffer, bufsize - 8) = swap64be(length);
+    *(uint64_t*) padd(buffer, bufsize - 8) = swap64be(length);
   }
 }
+#endif
 
 #pragma pack(push, 1)
 union hash_state {
@@ -37,7 +39,7 @@ union hash_state {
 #pragma pack(pop)
 
 void hash_permutation(union hash_state *state);
-void hash_process(union hash_state *state, const uint8_t *buf, size_t count);
+void hash_process(union hash_state *state, const uint8_t *buf, int count);
 
 #endif
 
@@ -46,7 +48,7 @@ enum {
   HASH_DATA_AREA = 136
 };
 
-void cn_fast_hash(const void *data, size_t length, char *hash);
+void cn_fast_hash(const void *data, int len, char *hash);
 void cn_slow_hash(const void *data, size_t length, char *hash);
 
 void hash_extra_blake(const void *data, size_t length, char *hash);

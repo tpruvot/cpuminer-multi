@@ -1523,7 +1523,7 @@ shavite_small_close(sph_shavite_small_context *sc,
 
 	buf = sc->buf;
 	ptr = sc->ptr;
-	count0 = (sc->count0 += (ptr << 3) + n);
+	count0 = (sc->count0 += SPH_T32(ptr << 3) + n);
 	count1 = sc->count1;
 	z = 0x80 >> n;
 	z = ((ub & -z) | z) & 0xFF;
@@ -1543,8 +1543,8 @@ shavite_small_close(sph_shavite_small_context *sc,
 	}
 	sph_enc32le(buf + 54, count0);
 	sph_enc32le(buf + 58, count1);
-	buf[62] = out_size_w32 << 5;
-	buf[63] = out_size_w32 >> 3;
+	buf[62] = (unsigned char) (out_size_w32 << 5);
+	buf[63] = (unsigned char) (out_size_w32 >> 3);
 	c256(sc, buf);
 	for (u = 0; u < out_size_w32; u ++)
 		sph_enc32le((unsigned char *)dst + (u << 2), sc->h[u]);
@@ -1608,7 +1608,7 @@ shavite_big_close(sph_shavite_big_context *sc,
 
 	buf = sc->buf;
 	ptr = sc->ptr;
-	count0 = (sc->count0 += (ptr << 3) + n);
+	count0 = (sc->count0 += SPH_T32(ptr << 3) + n);
 	count1 = sc->count1;
 	count2 = sc->count2;
 	count3 = sc->count3;
@@ -1632,8 +1632,8 @@ shavite_big_close(sph_shavite_big_context *sc,
 	sph_enc32le(buf + 114, count1);
 	sph_enc32le(buf + 118, count2);
 	sph_enc32le(buf + 122, count3);
-	buf[126] = out_size_w32 << 5;
-	buf[127] = out_size_w32 >> 3;
+	buf[126] = (unsigned char) (out_size_w32 << 5);
+	buf[127] = (unsigned char) (out_size_w32 >> 3);
 	c512(sc, buf);
 	for (u = 0; u < out_size_w32; u ++)
 		sph_enc32le((unsigned char *)dst + (u << 2), sc->h[u]);

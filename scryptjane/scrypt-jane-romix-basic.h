@@ -4,12 +4,12 @@ typedef void (FASTCALL *scrypt_ROMixfn)(scrypt_mix_word_t *X/*[chunkWords]*/, sc
 #endif
 
 /* romix pre/post nop function */
-static void STDCALL
+static void /* asm_calling_convention */
 scrypt_romix_nop(scrypt_mix_word_t *blocks, size_t nblocks) {
 }
 
 /* romix pre/post endian conversion function */
-static void STDCALL
+static void /* asm_calling_convention */
 scrypt_romix_convert_endian(scrypt_mix_word_t *blocks, size_t nblocks) {
 #if !defined(CPU_LE)
 	static const union { uint8_t b[2]; uint16_t w; } endian_test = {{1,0}};
@@ -24,8 +24,8 @@ scrypt_romix_convert_endian(scrypt_mix_word_t *blocks, size_t nblocks) {
 }
 
 /* chunkmix test function */
-typedef void (STDCALL *chunkmixfn)(scrypt_mix_word_t *Bout/*[chunkWords]*/, scrypt_mix_word_t *Bin/*[chunkWords]*/, scrypt_mix_word_t *Bxor/*[chunkWords]*/, uint32_t r);
-typedef void (STDCALL *blockfixfn)(scrypt_mix_word_t *blocks, size_t nblocks);
+typedef void (*chunkmixfn)(scrypt_mix_word_t *Bout/*[chunkWords]*/, scrypt_mix_word_t *Bin/*[chunkWords]*/, scrypt_mix_word_t *Bxor/*[chunkWords]*/, uint32_t r);
+typedef void (*blockfixfn)(scrypt_mix_word_t *blocks, size_t nblocks);
 
 static int
 scrypt_test_mix_instance(chunkmixfn mixfn, blockfixfn prefn, blockfixfn postfn, const uint8_t expected[16]) {

@@ -3,9 +3,14 @@ typedef struct scrypt_test_setting_t {
 	uint8_t Nfactor, rfactor, pfactor;
 } scrypt_test_setting;
 
+/*
+ * I'm hardcoding the values of p and r, which means they can't be tested
+ * anymore. A new test case with a different value for N should maybe be added.
+ *  - mikaelh
+ */
 static const scrypt_test_setting post_settings[] = {
 	{"", "", 3, 0, 0},
-	{"password", "NaCl", 9, 3, 4},
+//	{"password", "NaCl", 9, 3, 4},
 	{0}
 };
 

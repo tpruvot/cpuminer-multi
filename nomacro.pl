@@ -10,7 +10,7 @@
 
 use strict;
 
-foreach my $f (<*.S>) {
+foreach my $f (<asm/*.S>) {
 	rename $f, "$f.orig";
 	open FIN, "$f.orig";
 	open FOUT, ">$f";

@@ -1635,7 +1635,7 @@ encode_count_small(unsigned char *dst,
 {
 	low = T32(low << 9);
 	high = T32(high << 9) + (low >> 23);
-	low += (ptr << 3) + n;
+	low += T32(ptr << 3) + n;
 	sph_enc32le(dst, low);
 	sph_enc32le(dst + 4, high);
 }
@@ -1646,7 +1646,7 @@ encode_count_big(unsigned char *dst,
 {
 	low = T32(low << 10);
 	high = T32(high << 10) + (low >> 22);
-	low += (ptr << 3) + n;
+	low += T32(ptr << 3) + n;
 	sph_enc32le(dst, low);
 	sph_enc32le(dst + 4, high);
 }

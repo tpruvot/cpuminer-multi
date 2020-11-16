@@ -40,7 +40,9 @@ scrypt_hmac_init(scrypt_hmac_state *st, const uint8_t *key, size_t keylen) {
 		pad[i] ^= (0x5c ^ 0x36);
 	scrypt_hash_update(&st->outer, pad, SCRYPT_HASH_BLOCK_SIZE);
 
+#ifdef SCRYPT_PREVENT_STATE_LEAK
 	scrypt_ensure_zero(pad, sizeof(pad));
+#endif
 }
 
 static void
@@ -59,7 +61,9 @@ scrypt_hmac_finish(scrypt_hmac_state *st, scrypt_hash_digest mac) {
 	scrypt_hash_update(&st->outer, innerhash, sizeof(innerhash));
 	scrypt_hash_finish(&st->outer, mac);
 
+#ifdef SCRYPT_PREVENT_STATE_LEAK
 	scrypt_ensure_zero(st, sizeof(*st));
+#endif
 }
 
 static void
@@ -69,7 +73,7 @@ scrypt_pbkdf2(const uint8_t *password, size_t password_len, const uint8_t *salt,
 	uint8_t be[4];
 	uint32_t i, j, blocks;
 	uint64_t c;
-	
+
 	/* bytes must be <= (0xffffffff - (SCRYPT_HASH_DIGEST_SIZE - 1)), which they will always be under scrypt */
 
 	/* hmac(password, ...) */
@@ -105,8 +109,53 @@ scrypt_pbkdf2(const uint8_t *password, size_t password_len, const uint8_t *salt,
 		bytes -= SCRYPT_HASH_DIGEST_SIZE;
 	}
 
+#ifdef SCRYPT_PREVENT_STATE_LEAK
 	scrypt_ensure_zero(ti, sizeof(ti));
 	scrypt_ensure_zero(u, sizeof(u));
 	scrypt_ensure_zero(&hmac_pw, sizeof(hmac_pw));
 	scrypt_ensure_zero(&hmac_pw_salt, sizeof(hmac_pw_salt));
+#endif
+}
+
+/*
+ * Special version where N = 1
+ *  - mikaelh
+ */
+static void
+scrypt_pbkdf2_1(const uint8_t *password, size_t password_len, const uint8_t *salt, size_t salt_len, uint8_t *out, size_t bytes) {
+	scrypt_hmac_state hmac_pw, hmac_pw_salt, work;
+	scrypt_hash_digest ti, u;
+	uint8_t be[4];
+	uint32_t i, /*j,*/ blocks;
+	//uint64_t c;
+
+	/* bytes must be <= (0xffffffff - (SCRYPT_HASH_DIGEST_SIZE - 1)), which they will always be under scrypt */
+
+	/* hmac(password, ...) */
+	scrypt_hmac_init(&hmac_pw, password, password_len);
+
+	/* hmac(password, salt...) */
+	hmac_pw_salt = hmac_pw;
+	scrypt_hmac_update(&hmac_pw_salt, salt, salt_len);
+
+	blocks = ((uint32_t)bytes + (SCRYPT_HASH_DIGEST_SIZE - 1)) / SCRYPT_HASH_DIGEST_SIZE;
+	for (i = 1; i <= blocks; i++) {
+		/* U1 = hmac(password, salt || be(i)) */
+		U32TO8_BE(be, i);
+		work = hmac_pw_salt;
+		scrypt_hmac_update(&work, be, 4);
+		scrypt_hmac_finish(&work, ti);
+		memcpy(u, ti, sizeof(u));
+
+		memcpy(out, ti, (bytes > SCRYPT_HASH_DIGEST_SIZE) ? SCRYPT_HASH_DIGEST_SIZE : bytes);
+		out += SCRYPT_HASH_DIGEST_SIZE;
+		bytes -= SCRYPT_HASH_DIGEST_SIZE;
+	}
+
+#ifdef SCRYPT_PREVENT_STATE_LEAK
+	scrypt_ensure_zero(ti, sizeof(ti));
+	scrypt_ensure_zero(u, sizeof(u));
+	scrypt_ensure_zero(&hmac_pw, sizeof(hmac_pw));
+	scrypt_ensure_zero(&hmac_pw_salt, sizeof(hmac_pw_salt));
+#endif
 }

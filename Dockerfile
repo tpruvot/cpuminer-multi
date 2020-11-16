@@ -1,25 +1,16 @@
-#
-# Dockerfile for cpuminer
-# usage: docker run creack/cpuminer --url xxxx --user xxxx --pass xxxx
-# ex: docker run creack/cpuminer --url stratum+tcp://ltc.pool.com:80 --user creack.worker1 --pass abcdef
-#
-#
+# Usage: docker build .
+# Usage: docker run tpruvot/cpuminer-multi -a xevan --url=stratum+tcp://yiimp.ccminer.org:3739 --user=iGadPnKrdpW3pcdVC3aA77Ku4anrzJyaLG --pass=x
 
-FROM		ubuntu:12.10
-MAINTAINER	Guillaume J. Charmes <guillaume@charmes.net>
+FROM		ubuntu:14.04
+MAINTAINER	Tanguy Pruvot <tanguy.pruvot@gmail.com>
 
 RUN		apt-get update -qq
 
-RUN		apt-get install -qqy automake
-RUN		apt-get install -qqy libcurl4-openssl-dev
-RUN		apt-get install -qqy git
-RUN		apt-get install -qqy make
+RUN		apt-get install -qy automake autoconf pkg-config libcurl4-openssl-dev libssl-dev libjansson-dev libgmp-dev make g++ git
 
-RUN		git clone https://github.com/pooler/cpuminer
+RUN		git clone https://github.com/tpruvot/cpuminer-multi -b linux
 
-RUN		cd cpuminer && ./autogen.sh
-RUN		cd cpuminer && ./configure CFLAGS="-O3"
-RUN		cd cpuminer && make
+RUN		cd cpuminer-multi && ./build.sh
 
-WORKDIR		/cpuminer
-ENTRYPOINT	["./minerd"]
+WORKDIR		/cpuminer-multi
+ENTRYPOINT	["./cpuminer"]

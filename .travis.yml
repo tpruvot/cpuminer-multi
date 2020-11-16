@@ -3,9 +3,14 @@ language: c
 compiler:
   - gcc
 
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install libcurl4-openssl-dev
+
 before_script:
   - ./autogen.sh
 
 script:
-  - ./configure
+  - ./configure --with-crypto --with-curl
   - make
+  - ./cpuminer --cputest

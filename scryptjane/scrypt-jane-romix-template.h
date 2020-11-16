@@ -17,7 +17,7 @@
 
 	2*r: number of blocks in the chunk
 */
-static void STDCALL
+static void /* asm_calling_convention */
 SCRYPT_CHUNKMIX_FN(scrypt_mix_word_t *Bout/*[chunkWords]*/, scrypt_mix_word_t *Bin/*[chunkWords]*/, scrypt_mix_word_t *Bxor/*[chunkWords]*/, uint32_t r) {
 	scrypt_mix_word_t MM16 X[SCRYPT_BLOCK_WORDS], *block;
 	uint32_t i, j, blocksPerChunk = r * 2, half = 0;
@@ -99,6 +99,67 @@ SCRYPT_ROMIX_FN(scrypt_mix_word_t *X/*[chunkWords]*/, scrypt_mix_word_t *Y/*[chu
 
 		/* 8: X = H(Y ^ V_j) */
 		SCRYPT_CHUNKMIX_FN(X, Y, scrypt_item(V, j, chunkWords), r);
+	}
+
+	/* 10: B' = X */
+	/* implicit */
+
+	SCRYPT_ROMIX_UNTANGLE_FN(X, r * 2);
+}
+
+/*
+ * Special version with hard-coded r = 1
+ *  - mikaelh
+ */
+static void NOINLINE FASTCALL
+scrypt_ROMix_1(scrypt_mix_word_t *X/*[chunkWords]*/, scrypt_mix_word_t *Y/*[chunkWords]*/, scrypt_mix_word_t *V/*[N * chunkWords]*/, uint32_t N) {
+	const uint32_t r = 1;
+	uint32_t i, j, chunkWords = SCRYPT_BLOCK_WORDS * r * 2;
+	scrypt_mix_word_t *block = V;
+
+	SCRYPT_ROMIX_TANGLE_FN(X, r * 2);
+
+	/* 1: X = B */
+	/* implicit */
+
+	/* 2: for i = 0 to N - 1 do */
+	memcpy(block, X, chunkWords * sizeof(scrypt_mix_word_t));
+	for (i = 0; i < N - 1; i++, block += chunkWords) {
+		/* 3: V_i = X */
+		/* 4: X = H(X) */
+#ifdef SCRYPT_CHUNKMIX_1_FN
+		SCRYPT_CHUNKMIX_1_FN(block + chunkWords, block);
+#else
+		SCRYPT_CHUNKMIX_FN(block + chunkWords, block, NULL, r);
+#endif
+	}
+#ifdef SCRYPT_CHUNKMIX_1_FN
+	SCRYPT_CHUNKMIX_1_FN(X, block);
+#else
+	SCRYPT_CHUNKMIX_FN(X, block, NULL, r);
+#endif
+
+	/* 6: for i = 0 to N - 1 do */
+	for (i = 0; i < N; i += 2) {
+		/* 7: j = Integerify(X) % N */
+		j = X[chunkWords - SCRYPT_BLOCK_WORDS] & (N - 1);
+
+		/* 8: X = H(Y ^ V_j) */
+#ifdef SCRYPT_CHUNKMIX_1_XOR_FN
+		SCRYPT_CHUNKMIX_1_XOR_FN(Y, X, scrypt_item(V, j, chunkWords));
+#else
+		SCRYPT_CHUNKMIX_FN(Y, X, scrypt_item(V, j, chunkWords), r);
+#endif
+
+		/* 7: j = Integerify(Y) % N */
+		j = Y[chunkWords - SCRYPT_BLOCK_WORDS] & (N - 1);
+
+		/* 8: X = H(Y ^ V_j) */
+#ifdef SCRYPT_CHUNKMIX_1_XOR_FN
+		SCRYPT_CHUNKMIX_1_XOR_FN(X, Y, scrypt_item(V, j, chunkWords));
+#else
+		SCRYPT_CHUNKMIX_FN(X, Y, scrypt_item(V, j, chunkWords), r);
+#endif
 	}
 
 	/* 10: B' = X */

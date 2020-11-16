@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<title>Simple WebSocket call sample</title>
+</head>
+<body>
+	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<script type="text/javascript">
+
+function displayData(ip, data) {
+	$('#container').html($("<div></div>").html(data));
+}
+
+function getData(ip, port) {
+	if ("WebSocket" in window) {
+		var ws = new WebSocket('ws://'+ip+':'+port+'/summary','text');
+		ws.onmessage = function (evt) {
+			var html = '';
+			var now = new Date();
+			var ts = Math.round(now/1000);
+			var data = evt.data.split('|');
+			for (n in data) {
+				var map = data[n].split(';');
+				var cpu = 0;
+				for (k in map) {
+					var kv = map[k].split('=');
+					if (kv.length == 1)
+						continue;
+					html = html + kv[0]+' = '+kv[1] + '<br/>';
+					// console.log('Data received: #CPU'+cpu+': '+kv[0]+' = '+kv[1]);
+				}
+			}
+			displayData(ip, html);
+		};
+		ws.onerror = function (evt) {
+			var w = evt.target;
+			console.log('Error! readyState=' + w.readyState); //log errors
+			$('#container').html('Error! Unable to get WebSocket data from '+ip); //log errors
+			return false;
+		};
+		ws.onclose = function() {
+			// websocket is closed.
+		};
+	} else {
+		// The browser doesn't support WebSocket
+		alert("WebSocket NOT supported by your Browser!");
+	}
+}
+
+var to = 0;
+
+/* ajax auto refresh */
+function refreshData() {
+	clearTimeout(to);
+
+	getData('192.168.0.110', 4048);
+	//getData('localhost', 4048);
+
+	to = setTimeout('refreshData()', 2000);
+}
+
+$(function () {
+	refreshData();
+});
+
+</script>
+</body>
+</html>

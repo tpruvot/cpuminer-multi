@@ -47,7 +47,6 @@
 	#pragma warning(disable : 4127) /* conditional expression is constant */
 	#pragma warning(disable : 4100) /* unreferenced formal parameter */
 	
-	#define _CRT_SECURE_NO_WARNINGS	
 	#include <float.h>
 	#include <stdlib.h> /* _rotl */
 	#include <intrin.h>
@@ -276,6 +275,14 @@ scrypt_ensure_zero(void *p, size_t len) {
 		b[i] = 0;
 #endif
 }
+
+#ifdef __arm__
+
+static size_t detect_cpu(void) {
+	return 0;
+}
+
+#endif
 
 #include "scrypt-jane-portable-x86.h"
 

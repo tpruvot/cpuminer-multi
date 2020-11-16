@@ -28,14 +28,56 @@
  * ---------------------------------------------------------------------------
  */
 static const char _NR[] = {
-	0x4e,0x61,0x62,0x69,0x6c,0x20,0x53,0x2e,0x20,
-	0x41,0x6c,0x20,0x52,0x61,0x6d,0x6c,0x69,0x00 };
+  0x4e,0x61,0x62,0x69,0x6c,0x20,0x53,0x2e,0x20,
+  0x41,0x6c,0x20,0x52,0x61,0x6d,0x6c,0x69,0x00
+};
+
+#include <sys/types.h>
+#define NO_OLDNAMES /* timeb is still defined in mingw */
 
 #include "miner.h"
 
 #include <stddef.h>
-#include <time.h> 
-#include <sys/timeb.h>
+#include <time.h>
+
+// Only used by ftime, which was removed from POSIX 2008.
+struct timeb {
+  time_t          time;
+  unsigned short  millitm;
+  short           timezone;
+  short           dstflag;
+};
+
+#ifdef _MSC_VER
+struct timezone {
+  int  tz_minuteswest; /* minutes W of Greenwich */
+  int  tz_dsttime;     /* type of dst correction */
+};
+#endif
+
+// This was removed from POSIX 2008.
+static int ftime(struct timeb* tb) {
+  struct timeval  tv;
+  struct timezone tz;
+
+  if (gettimeofday(&tv, &tz) < 0)
+    return -1;
+
+  tb->time    = tv.tv_sec;
+  tb->millitm = (unsigned short) ((tv.tv_usec + 500) / 1000);
+
+  if (tb->millitm == 1000) {
+    ++tb->time;
+    tb->millitm = 0;
+  }
+
+  tb->timezone = tz.tz_minuteswest;
+  tb->dstflag  = tz.tz_dsttime;
+
+  return 0;
+}
+
+
 #if !((defined(__FreeBSD__) && __FreeBSD__ >= 10) || defined(__APPLE__))
 #include <malloc.h>
 #endif
@@ -45,6 +87,7 @@ static const char _NR[] = {
 
 #ifdef WIN32
 #include <process.h>
+#define getpid _getpid
 #else
 #include <sys/types.h>
 #include <unistd.h>
@@ -483,7 +526,7 @@ static uint32_t oaes_get_seed(void)
 	_test = (char *) calloc( sizeof( char ), timer.millitm );
 	_ret = gmTimer->tm_year + 1900 + gmTimer->tm_mon + 1 + gmTimer->tm_mday +
 			gmTimer->tm_hour + gmTimer->tm_min + gmTimer->tm_sec + timer.millitm +
-			(uintptr_t) ( _test + timer.millitm ) + getpid();
+			(uint32_t) ( _test + timer.millitm ) + getpid();
 
 	if( _test )
 		free( _test );
@@ -655,7 +698,7 @@ OAES_RET oaes_key_export( OAES_CTX * ctx,
 	// header
 	memcpy( data, oaes_header, OAES_BLOCK_SIZE );
 	data[5] = 0x01;
-	data[7] = _ctx->key->data_len;
+	data[7] = (uint8_t) _ctx->key->data_len;
 	memcpy( data + OAES_BLOCK_SIZE, _ctx->key->data, _ctx->key->data_len );
 	
 	return OAES_RET_SUCCESS;
@@ -1216,7 +1259,7 @@ OAES_RET oaes_encrypt( OAES_CTX * ctx,
 		
 		// insert pad
 		for( _j = 0; _j < OAES_BLOCK_SIZE - _block_size; _j++ )
-			_block[ _block_size + _j ] = _j + 1;
+			_block[_block_size + _j] = (uint8_t)_j + 1;
 	
 		// CBC
 		if( _ctx->options & OAES_OPTION_CBC )

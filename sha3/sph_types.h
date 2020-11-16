@@ -930,14 +930,24 @@ typedef long long sph_s64;
  */
 
 #define SPH_T32(x)    ((x) & SPH_C32(0xFFFFFFFF))
+#ifdef _MSC_VER
+#define SPH_ROTL32(x, n)   _rotl(x, n)
+#define SPH_ROTR32(x, n)   _rotr(x, n)
+#else
 #define SPH_ROTL32(x, n)   SPH_T32(((x) << (n)) | ((x) >> (32 - (n))))
 #define SPH_ROTR32(x, n)   SPH_ROTL32(x, (32 - (n)))
+#endif
 
 #if SPH_64
 
 #define SPH_T64(x)    ((x) & SPH_C64(0xFFFFFFFFFFFFFFFF))
+#ifdef _MSC_VER
+#define SPH_ROTL64(x, n)   _rotl64(x, n)
+#define SPH_ROTR64(x, n)   _rotr64(x, n)
+#else
 #define SPH_ROTL64(x, n)   SPH_T64(((x) << (n)) | ((x) >> (64 - (n))))
 #define SPH_ROTR64(x, n)   SPH_ROTL64(x, (64 - (n)))
+#endif
 
 #endif
 

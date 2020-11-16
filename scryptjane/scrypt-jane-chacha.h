@@ -18,6 +18,10 @@ typedef uint32_t scrypt_mix_word_t;
 
 #if defined(SCRYPT_CHACHA_AVX)
 	#define SCRYPT_CHUNKMIX_FN scrypt_ChunkMix_avx
+	#if defined(X86_INTRINSIC_AVX)
+		#define SCRYPT_CHUNKMIX_1_FN scrypt_ChunkMix_avx_1
+		#define SCRYPT_CHUNKMIX_1_XOR_FN scrypt_ChunkMix_avx_1_xor
+	#endif
 	#define SCRYPT_ROMIX_FN scrypt_ROMix_avx
 	#define SCRYPT_MIX_FN chacha_core_avx
 	#define SCRYPT_ROMIX_TANGLE_FN scrypt_romix_nop
@@ -27,6 +31,10 @@ typedef uint32_t scrypt_mix_word_t;
 
 #if defined(SCRYPT_CHACHA_SSSE3)
 	#define SCRYPT_CHUNKMIX_FN scrypt_ChunkMix_ssse3
+	#if defined(X86_INTRINSIC_SSSE3)
+		#define SCRYPT_CHUNKMIX_1_FN scrypt_ChunkMix_ssse3_1
+		#define SCRYPT_CHUNKMIX_1_XOR_FN scrypt_ChunkMix_ssse3_1_xor
+	#endif
 	#define SCRYPT_ROMIX_FN scrypt_ROMix_ssse3
 	#define SCRYPT_MIX_FN chacha_core_ssse3
 	#define SCRYPT_ROMIX_TANGLE_FN scrypt_romix_nop
@@ -36,6 +44,10 @@ typedef uint32_t scrypt_mix_word_t;
 
 #if defined(SCRYPT_CHACHA_SSE2)
 	#define SCRYPT_CHUNKMIX_FN scrypt_ChunkMix_sse2
+	#if defined(X86_INTRINSIC_SSE2)
+		#define SCRYPT_CHUNKMIX_1_FN scrypt_ChunkMix_sse2_1
+		#define SCRYPT_CHUNKMIX_1_XOR_FN scrypt_ChunkMix_sse2_1_xor
+	#endif
 	#define SCRYPT_ROMIX_FN scrypt_ROMix_sse2
 	#define SCRYPT_MIX_FN chacha_core_sse2
 	#define SCRYPT_ROMIX_TANGLE_FN scrypt_romix_nop
@@ -81,17 +93,21 @@ scrypt_getROMix() {
 #if defined(SCRYPT_TEST_SPEED)
 static size_t
 available_implementations() {
+	size_t cpuflags = detect_cpu();
 	size_t flags = 0;
 
 #if defined(SCRYPT_CHACHA_AVX)
-	flags |= cpu_avx;
+	if (cpuflags & cpu_avx)
+		flags |= cpu_avx;
 #endif
 
 #if defined(SCRYPT_CHACHA_SSSE3)
-	flags |= cpu_ssse3;
+	if (cpuflags & cpu_ssse3)
+		flags |= cpu_ssse3;
 #endif
 
 #if defined(SCRYPT_CHACHA_SSE2)
+	if (cpuflags & cpu_sse2)
 		flags |= cpu_sse2;
 #endif
 
