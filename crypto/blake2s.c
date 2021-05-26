@@ -323,7 +323,7 @@ int blake2s_final( blake2s_state *S, uint8_t *out, uint8_t outlen )
 
 int blake2s( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen )
 {
-	blake2s_state S[1];
+	blake2s_state S;
 
 	/* Verify parameters */
 	if ( NULL == in ) return -1;
@@ -334,15 +334,15 @@ int blake2s( uint8_t *out, const void *in, const void *key, const uint8_t outlen
 
 	if( keylen > 0 )
 	{
-		if( blake2s_init_key( S, outlen, key, keylen ) < 0 ) return -1;
+		if( blake2s_init_key( &S, outlen, key, keylen ) < 0 ) return -1;
 	}
 	else
 	{
-		if( blake2s_init( S, outlen ) < 0 ) return -1;
+		if( blake2s_init( &S, outlen ) < 0 ) return -1;
 	}
 
-	blake2s_update( S, ( uint8_t * )in, inlen );
-	blake2s_final( S, out, outlen );
+	blake2s_update( &S, ( uint8_t * )in, inlen );
+	blake2s_final( &S, out, outlen );
 	return 0;
 }
 
