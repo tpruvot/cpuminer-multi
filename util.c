@@ -1660,7 +1660,7 @@ static uint32_t getblocheight(struct stratum_ctx *sctx)
 
 	// find 0xffff tag
 	p = (uint8_t*) sctx->job.coinbase + 32;
-	m = sctx->job.coinbase_size - 32 - 2;
+	m = p + 128;
 	while (*p != 0xff && p < m) p++;
 	while (*p == 0xff && p < m) p++;
 	if (*(p-1) == 0xff && *(p-2) == 0xff) {
