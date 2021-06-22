@@ -84,6 +84,7 @@ enum algos {
 	ALGO_QUARK,       /* Quark */
 	ALGO_ALLIUM,      /* Garlicoin double lyra2 */
 	ALGO_AXIOM,       /* Shabal 256 Memohash */
+	ALGO_BALLOON,
 	ALGO_BASTION,
 	ALGO_BLAKE,       /* Blake 256 */
 	ALGO_BLAKECOIN,   /* Simplified 8 rounds Blake 256 */
@@ -156,6 +157,7 @@ static const char *algo_names[] = {
 	"quark",
 	"allium",
 	"axiom",
+	"balloon",
 	"bastion",
 	"blake",
 	"blakecoin",
@@ -323,6 +325,7 @@ Options:\n\
   -a, --algo=ALGO       specify the algorithm to use\n\
                           allium       Garlicoin double lyra2\n\
                           axiom        Shabal-256 MemoHash\n\
+                          balloon      Balloon\n\
                           bitcore      Timetravel with 10 algos\n\
                           blake        Blake-256 14-rounds (SFR)\n\
                           blakecoin    Blake-256 single sha256 merkle\n\
@@ -1093,6 +1096,7 @@ static int share_result(int result, struct work *work, const char *reason)
 
 	switch (opt_algo) {
 	case ALGO_AXIOM:
+	case ALGO_BALLOON:
 	case ALGO_CRYPTOLIGHT:
 	case ALGO_CRYPTONIGHT:
 	case ALGO_PLUCK:
@@ -2194,6 +2198,7 @@ static void *miner_thread(void *userdata)
 					max64 = 0xF;
 				break;
 			case ALGO_AXIOM:
+			case ALGO_BALLOON:
 			case ALGO_CRYPTOLIGHT:
 			case ALGO_CRYPTONIGHT:
 			case ALGO_SCRYPTJANE:
@@ -2281,6 +2286,9 @@ static void *miner_thread(void *userdata)
 		/* scan nonces for a proof-of-work hash */
 		switch (opt_algo) {
 
+		case ALGO_BALLOON:
+			rc = scanhash_balloon(thr_id, &work, max_nonce, &hashes_done);
+			break;
 		case ALGO_ALLIUM:
 			rc = scanhash_allium(thr_id, &work, max_nonce, &hashes_done);
 			break;
@@ -2499,10 +2507,12 @@ static void *miner_thread(void *userdata)
 		if (!opt_quiet && (time(NULL) - tm_rate_log) > opt_maxlograte) {
 			switch(opt_algo) {
 			case ALGO_AXIOM:
+			case ALGO_BALLOON:
 			case ALGO_CRYPTOLIGHT:
 			case ALGO_CRYPTONIGHT:
 			case ALGO_PLUCK:
 			case ALGO_SCRYPTJANE:
+			case ALGO_YESCRYPT:
 				applog(LOG_INFO, "CPU #%d: %.2f H/s", thr_id, thr_hashrates[thr_id]);
 				break;
 			default:
@@ -2522,6 +2532,7 @@ static void *miner_thread(void *userdata)
 				case ALGO_CRYPTOLIGHT:
 				case ALGO_CRYPTONIGHT:
 				case ALGO_AXIOM:
+				case ALGO_BALLOON:
 				case ALGO_SCRYPTJANE:
 					sprintf(s, "%.3f", hashrate);
 					applog(LOG_NOTICE, "Total: %s H/s", s);

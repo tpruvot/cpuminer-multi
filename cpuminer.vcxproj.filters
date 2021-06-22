@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="cpu-miner.c" />
     <ClCompile Include="util.c" />
@@ -378,6 +379,12 @@
     <ClCompile Include="yescrypt\sha256_Y.c">
       <Filter>yescrypt</Filter>
     </ClCompile>
+    <ClCompile Include="algo\balloon.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="balloon\balloon-algo.c">
+      <Filter>balloon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sha3\sph_blake.h">
@@ -593,6 +600,9 @@
     <ClInclude Include="yescrypt\yescrypt-platform.h">
       <Filter>yescrypt</Filter>
     </ClInclude>
+    <ClInclude Include="balloon\balloon.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="sph">
@@ -633,6 +643,9 @@
     </Filter>
     <Filter Include="yescrypt">
       <UniqueIdentifier>{678c0f76-3cd5-418b-bc6b-84a10d81f789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="balloon">
+      <UniqueIdentifier>{5040877b-c86b-4fa3-88e8-7b36d17f9b4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

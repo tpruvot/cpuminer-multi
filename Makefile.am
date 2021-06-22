@@ -44,6 +44,7 @@ cpuminer_SOURCES = \
   sha3/sph_whirlpool.c \
   sha3/sph_tiger.c \
   sha3/gost_streebog.c \
+  balloon/balloon-algo.c \
   crypto/blake2s.c \
   crypto/blake2b.c \
   crypto/oaes_lib.c \
@@ -57,6 +58,7 @@ cpuminer_SOURCES = \
   lyra2/Lyra2.c lyra2/Sponge.c \
   yescrypt/yescrypt-common.c yescrypt/yescrypt-best.c \
   yescrypt/sha256_Y.c \
+  algo/balloon.c \
   algo/allium.c \
   algo/axiom.c \
   algo/bastion.c \
